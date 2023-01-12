@@ -72,7 +72,8 @@ let total=0;
 	        		
 	        		const html = `
 	        			<tr class="hover">
-							<td >\${ $(this).find("indexNo").text() }</td>
+	        				<td><input type="checkbox"></td>
+							<td >\${$(this).find("indexNo").text() }</td>
 							<td ><img style="width:150px;" src="\${$(this).find("bigDrawing").text()}"/></td>
 							<td >\${ $(this).find("applicationNumber").text() }</td>
 							<td >\${ $(this).find("applicationDate").text() }</td>
@@ -148,6 +149,7 @@ let total=0;
 		<table class="table table-zebra w-full">
 			<thead>
 				<tr>
+					<th class="text-sm"></th>
 					<th class="text-sm">No</th>
 					<th class="text-sm">이미지</th>
 					<th class="text-sm">출원번호</th>

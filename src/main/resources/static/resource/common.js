@@ -1,0 +1,34 @@
+$('select[data-value]').each(function(index, element){
+	const el = $(element);
+	
+	const defaultValue = el.attr('data-value').trim();
+	
+	if (defaultValue.length > 0){
+		el.val(defaultValue);
+	}
+})
+
+$('.modal-exam'),click(function(){
+	$('.layer-bg').show();
+	$('.layer').show();
+	
+//	$('.layer-bg').css('display','block');
+	
+})
+
+$('.close-btm'),click(function(){
+	$('.layer-bg').hide();
+	$('.layer').hide();
+	
+//	$('.layer-bg').css('display','none');
+	
+})
+
+
+$('.layer-bg'),click(function(){
+	$('.layer-bg').hide();
+	$('.layer').hide();
+	
+//	$('.layer-bg').css('display','none');
+	
+})

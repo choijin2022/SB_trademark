@@ -1,0 +1,91 @@
+@font-face {
+  font-family: 'Godo';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Godo';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoB.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoB.woff') format('woff');
+}
+
+html > body, html > body .ProseMirror, html > body .toastui-editor-contents {
+ font-family: 'Godo', sans-serif;
+/*  text-underline-position:under; */
+}
+
+html > body .ProseMirror, html > body .toastui-editor-contents{
+	font-size:1.25rem;
+	text-align: left;
+}
+
+html > body .toast-ui-viewer .toastui-editor-contents{
+	text-align: center;
+}
+.table-box-type-1 > table {
+	width: 100%;
+}
+ 
+.table-box-type-1 > table th, .table-box-type-1 > table td {
+	border:1px solid black;
+	padding: 10px;
+	text-align: center;
+}
+
+.btn-text-link {
+	color: black;
+}
+
+.btn-text-link:hover {
+	color: olive;
+	text-decoration: underline;
+}
+
+.border-bottom-line {
+	border-bottom: 1px solid #e1e1e1;
+}
+
+body {
+	min-width: 800px;
+}
+
+modal-exam{
+	font-size:3rem;
+}
+
+.layer{
+	display:none;
+	width:500px;
+	height:500px;
+	background-color:black;
+	color:white;
+	border:10px solid green;
+	position:absolution;
+	top:50%;
+	left:50%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.layer>h2{
+	padding: 20px;
+} 
+
+.layer>.close-btn{
+	position:absolution;
+	bottom:20px;
+}
+
+.layer-bg{
+	display:none;
+	width:100%;
+	height:100%;
+	background-color: rgba(0,0,0, .4);
+	position:absolution;
+	top:0;
+	left:0;
+	
+}
+

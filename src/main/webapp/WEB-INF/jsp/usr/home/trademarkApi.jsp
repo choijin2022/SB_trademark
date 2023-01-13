@@ -4,7 +4,6 @@
 <%@ include file="../common/head.jsp"%>
 
 <script>
-let total=0;
 
  const submitForm = function(form) {
 <!-- 		유효성 검사는 하지않았습니다. -->
@@ -28,7 +27,8 @@ let total=0;
 		
 		return false;
 	};
-	
+	let total = 0;
+	showButton = false;
 <!-- 	AJAX 함수 -->
 	const getData = function(numOfRows, searchString, title) {
 <!-- 		// CORS 우회를 위한 프록시 사이트, 해당 사이트에 들어가서 체크 버튼을 누르고 사용 -->
@@ -51,9 +51,8 @@ let total=0;
 	        dataType: "xml",				// 데이터 타입
 	        success: function(data) {
  	        	console.log(data);
- 	        	
- 	        	total = $(data).find("totalCount");
- 	        	$(".hitCount").append(total);
+ 	        	total = $(data).find("totalCount").text();
+ 	        	$(".hitCount").html(total + '개');
  	        	
 <!-- 	        	// XML을 불러왔으나 성공적으로 못불러온 경우 -->
 	        	let successYN = $(data).find("successYN").text();
@@ -64,15 +63,20 @@ let total=0;
 	        		return false;
 	        	}
 	        	
+	        	let addStoreButtonHtml = `<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>`;
+	        	$(".storeButton").empty();
+	        	$(".storeButton").append(addStoreButtonHtml);
+	        	
 <!-- 	        	// 리스트 부분 비우기 -->
 	        	$("#product").empty();
 	        	
 <!-- 	        	// 리스트 생성 -->
 	        	$(data).find("item").each(function() {
-	        		
 	        		const html = `
-	        			<tr class="hover">
-	        				<td><input type="checkbox"></td>
+	        			<tr class="hover" id="\${$(this).find("indexNo").text() }">
+	        				<td>
+	        					<input type="checkbox" name="test">
+	        				</td>
 							<td >\${$(this).find("indexNo").text() }</td>
 							<td ><img style="width:150px;" src="\${$(this).find("bigDrawing").text()}"/></td>
 							<td >\${ $(this).find("applicationNumber").text() }</td>
@@ -83,8 +87,15 @@ let total=0;
 	        		`
 	        		
 	        		$("#product").append(html)
+	        		
 	        	})
-	            
+	        	let arr = new Array();
+
+				$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+				    let a = $(this).closest('form').get(0);
+					a.no.value = 1;
+					console.log(a.no.value);
+				});
 	        },
 	        error: function(){
 <!-- 	        	// XML 로딩 실패 -->
@@ -96,6 +107,28 @@ let total=0;
 	};
 	
 
+	function selectAll(selectAll)  {
+		  const checkboxes 
+		     = document.querySelectorAll('input[type="checkbox"]');
+		  
+		  checkboxes.forEach((checkbox) => {
+		    checkbox.checked = selectAll.checked
+		  })
+		}
+	
+	function test(){
+		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+		    let a = $(this).closest('form').get(0);
+			a.no.value = 1;
+			console.log(a.no.value);
+		});
+		return false;
+	}
+				
+// 	$("#arrayParam").val(array);
+		
+// 	$("#form").attr("action", "/test/test.do");  
+// 	$("#form").submit();
 	
 </script>
 
@@ -145,24 +178,34 @@ let total=0;
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-	<h2>total<span class="text-base hitCount"> &nbsp </span></h2>
-		<table class="table table-zebra w-full">
-			<thead>
-				<tr>
-					<th class="text-sm"></th>
-					<th class="text-sm">No</th>
-					<th class="text-sm">이미지</th>
-					<th class="text-sm">출원번호</th>
-					<th class="text-sm">출원일자</th>
-					<th class="text-sm">법적상태</th>
-					<th class="text-sm">출원인 이름</th>
-				</tr>
-			</thead>
-
-			<tbody id="product">
-				
-			</tbody>
-		</table>
+		<h2>total<span class="ml-2 text-base hitCount"></span></h2>
+		<form>
+			<input type="hidden" name="no"/>
+			<input type="hidden" name="img"/>
+			<input type="hidden" name="an"/>
+			<input type="hidden" name="ad"/>
+			<input type="hidden" name="as"/>
+			<input type="hidden" name="aname"/>
+			<table class="table table-zebra w-full">
+				<thead>
+					<tr>
+						<th class="text-sm"><input type="checkbox" onclick='selectAll(this)'></th>
+						<th class="text-sm">No</th>
+						<th class="text-sm">이미지</th>
+						<th class="text-sm">출원번호</th>
+						<th class="text-sm">출원일자</th>
+						<th class="text-sm">법적상태</th>
+						<th class="text-sm">출원인 이름</th>
+					</tr>
+				</thead>
+	
+				<tbody id="product">
+					
+				</tbody>
+			</table>
+			<div class="storeButton"></div>
+		</form>
+		<a onclick="test();">테스트용</a>
 	</div>
 	<div class="pageNav flex justify-center mt-5">
 			<div class="btn-group">

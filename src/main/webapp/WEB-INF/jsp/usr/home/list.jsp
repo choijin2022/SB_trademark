@@ -4,6 +4,11 @@
 <%@ include file="../common/head.jsp"%>
 
 <script>
+function Trademark_getData(){
+	
+}
+
+
 
  const submitForm = function(form) {
 <!-- 		유효성 검사는 하지않았습니다. -->
@@ -29,6 +34,7 @@
 	};
 	let total = 0;
 	showButton = false;
+	
 <!-- 	AJAX 함수 -->
 	const getData = function(numOfRows, searchString, title) {
 <!-- 		// CORS 우회를 위한 프록시 사이트, 해당 사이트에 들어가서 체크 버튼을 누르고 사용 -->
@@ -75,7 +81,7 @@
 	        		const html = `
 	        			<tr class="hover" id="\${$(this).find("indexNo").text() }">
 	        				<td>
-	        					<input type="checkbox" name="test" class="test" />
+	        					<input type="checkbox" name="test">
 	        				</td>
 							<td >\${$(this).find("indexNo").text() }</td>
 							<td ><img style="width:150px;" src="\${$(this).find("bigDrawing").text()}"/></td>
@@ -89,7 +95,6 @@
 	        		$("#product").append(html)
 	        		
 	        	})
-	        	
 	        	let arr = new Array();
 
 				$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
@@ -116,8 +121,6 @@
 		    checkbox.checked = selectAll.checked
 		  })
 		}
-	
-
 	
 // 	function test(){
 // 		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
@@ -183,8 +186,7 @@
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
 		<h2>total<span class="ml-2 text-base hitCount"></span></h2>
-		<form >			
-			<input type="hidden" name="checkedValue" value=""/>
+		<form >
 			<input type="hidden" name="no"/>
 			<input type="hidden" name="img"/>
 			<input type="hidden" name="an"/>
@@ -208,7 +210,6 @@
 					
 				</tbody>
 			</table>
-			
 			<div class="storeButton"></div>
 		</form>
 		<a href="/usr/home/test" class="btn btn-active btn-ghost btn-sm mr-2">test</a>

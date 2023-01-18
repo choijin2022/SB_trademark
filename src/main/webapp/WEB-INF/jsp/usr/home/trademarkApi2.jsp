@@ -29,6 +29,7 @@
 	};
 	let total = 0;
 	showButton = false;
+	
 <!-- 	AJAX 함수 -->
 	const getData = function(numOfRows, searchString, title) {
 <!-- 		// CORS 우회를 위한 프록시 사이트, 해당 사이트에 들어가서 체크 버튼을 누르고 사용 -->

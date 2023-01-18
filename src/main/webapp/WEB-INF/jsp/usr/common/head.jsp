@@ -27,7 +27,7 @@
 			<a class="h-full px-3 flex items-center" href="#"><span>로고</span></a>
 			<div class="flex-grow"></div>
 			<ul class="flex">
-				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/usr/home/trademarkApi"><span>API</span></a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/usr/home/trademarkApi2"><span>API2</span></a></li>
 <!-- 				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/"><span>HOME</span></a></li> -->
 <!-- 				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/usr/article/list?boardId=1"><span>NOTICE</span></a></li> -->
 <!-- 				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/usr/article/list?boardId=2"><span>FREE</span></a></li> -->

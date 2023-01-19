@@ -38,8 +38,9 @@ public class UserApiController {
 //		return test;
 //	}
 	@RequestMapping("/usr/home/searchTrademard")
-	public String doSearchTrademard(Model model,int numOfRows, String searchString, String title) {
-		
+	@ResponseBody
+	public List<Trademark> doSearchTrademard(Model model, int numOfRows, String searchString, String title) {
+		List<Trademark> trademarks = new ArrayList<>();
 		
 		try {
 			String url = "http://kipo-api.kipi.or.kr/openapi/service/trademarkInfoSearchService/getWordSearch";
@@ -55,7 +56,6 @@ public class UserApiController {
 			System.out.println("root tag : " + documentInfo.getDocumentElement().getNodeName());
 			NodeList nList = documentInfo.getElementsByTagName("item");
 			System.out.println("파싱할 tag수 : " + nList.getLength());
-			List<Trademark> trademarks = new ArrayList<>();
 			
 			for(int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
@@ -86,23 +86,25 @@ public class UserApiController {
 					trademark.setFullText(getTagValue("fullText", eElement));
 					trademark.setDrawing(getTagValue("drawing", eElement));
 					trademark.setBigDrawing(getTagValue("bigDrawing", eElement));
-					trademark.setTotalCount(getTagValue("totalCount", eElement));
+//					trademark.setTotalCount(getTagValue("totalCount", eElement));
 					System.out.println(trademark);
 					
 					trademarks.add(trademark);
-					System.out.println("indexNo : " + getTagValue("indexNo", eElement));
-					System.out.println("applicationDate : " + getTagValue("applicationDate", eElement));
+//					model.addAttribute("trademark", trademark);
+//					System.out.println("indexNo : " + getTagValue("indexNo", eElement));
+//					System.out.println("applicationDate : " + getTagValue("applicationDate", eElement));
 					
 				}
 			}
 			// ??
 			model.addAttribute("trademarks", trademarks);
+			System.out.println(trademarks);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return "usr/home/trademarkApi2";
+		return trademarks;
 	}
 	
 	private static String getTagValue(String tag, Element eElement) {

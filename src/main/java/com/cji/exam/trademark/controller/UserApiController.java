@@ -25,7 +25,7 @@ public class UserApiController {
 	}
 	
 	@RequestMapping("/usr/home/trademarkApi2")
-	public String list() {
+	public String trademarkApi2() {
 		return "usr/home/trademarkApi2";
 	}
 	
@@ -39,7 +39,7 @@ public class UserApiController {
 //	}
 	@RequestMapping("/usr/home/searchTrademard")
 	@ResponseBody
-	public List<Trademark> doSearchTrademard(Model model, int numOfRows, String searchString, String title) {
+	public List<Trademark> doSearchTrademard(int numOfRows, String searchString, String title) {
 		List<Trademark> trademarks = new ArrayList<>();
 		
 		try {
@@ -64,6 +64,7 @@ public class UserApiController {
 					// Trademark 객체 생성 후 저장
 					Trademark trademark = new Trademark();
 					
+					trademark.setId(getTagValue("indexNo", eElement));
 					trademark.setIndexNo(getTagValue("indexNo", eElement));
 					trademark.setApplicantName(getTagValue("applicantName", eElement));
 					trademark.setApplicationNumber(getTagValue("applicationNumber", eElement));
@@ -97,8 +98,8 @@ public class UserApiController {
 				}
 			}
 			// ??
-			model.addAttribute("trademarks", trademarks);
-			System.out.println(trademarks);
+//			model.addAttribute("trademarks", trademarks);
+//			System.out.println(trademarks);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,4 +117,12 @@ public class UserApiController {
 		return nValue.getNodeValue();
 	}
 	
+	@RequestMapping("/usr/home/stored")
+	@ResponseBody
+	public List<Trademark> storedTrademark() {
+		List<Trademark> trademarks = new ArrayList<>();
+		
+		
+		return trademarks;
+	}
 }

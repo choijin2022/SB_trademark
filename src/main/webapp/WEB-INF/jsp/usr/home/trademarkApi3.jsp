@@ -7,17 +7,14 @@
 let total = 0;
 showButton = false;
 
-
-
-
 const submitForm = function(form) {
-	
+	console.log("??");
 	//수정
 	
 	let numOfRows = form.numOfRows.value.trim();
-	let searchString = form.searchString.value.trim();
+		let searchString = form.searchString.value.trim();
 // 		let searchRecentYear = form.searchRecentYear.value.trim();
-	let title = form.title.value.trim();
+		let title = form.title.value.trim();
 	$.get('../home/searchTrademard', {
 		numOfRows : numOfRows,
 		searchString: searchString,
@@ -26,46 +23,40 @@ const submitForm = function(form) {
 	}, function(data){
 		
 		console.log(data);
-// 		console.log(data[0]);
-		
+		console.log(data[0]);
 		total = $(data).find("totalCount").text();
 		$(".hitCount").html(total + '개');
 		
 		let addStoreButtonHtml = `<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>`;
-//     	$(".storeButton").empty();
-    	$(".storeButton").html(addStoreButtonHtml);
+    	$(".storeButton").empty();
+    	$(".storeButton").append(addStoreButtonHtml);
     	
 <!-- 	        	// 리스트 부분 비우기 -->
     	$("#product").empty();
     	
 <!-- 	        	// 리스트 생성 -->
+		let i  = 0;
 		
-		let num = 0;
     	$(data).each(function() {
-    		
-    		console.log(data[num]);
-			let index = data[num].indexNo;
-			console.log(index);
-
-//     			<form action="../home/stored" method="POST" onsubmit="storedTradeMark__submitForm(this); return false;">
+    		let index = $(this).find("indexNo");
+    		console.log(index);
     		const html = `
-	    			<tr class="hover">
-	    				<td>
-	    					<input type="checkbox" name="test">
-	    				</td>
-						<td >\${index}</td>
-						<td ><img style="width:150px;" src="\${data[num].bigDrawing}"/></td>
-						<td >\${data[num].applicationNumber}</td>
-						<td >\${data[num].applicationDate}</td>
-						<td >\${data[num].applicationStatus}</td>
-						<td >\${data[num].applicantName}</td>
-					</tr>
+    			<tr class="hover" id="$(this).find("indexNo").text()">
+    				<td>
+    					<input type="checkbox" name="test">
+    				</td>
+					<td >$(this).find("indexNo")</td>
+					<td ><img style="width:150px;" src="\${$(this).find("bigDrawing").text()}"/></td>
+					<td >\${ $(this).find("applicationNumber").text() }</td>
+					<td >\${ $(this).find("applicationDate").text() }</td>
+					<td >\${ $(this).find("applicationStatus").text() }</td>
+					<td >\${ $(this).find("applicantName").text() }</td>
+				</tr>
     		`
-// 				</form>
-
+    		
     		$("#product").append(html);
     		
-    		num++;
+    		
     	})
 		
     	let arr = new Array();
@@ -84,6 +75,49 @@ const submitForm = function(form) {
 
 	
 
+	
+// 	const getData = function(numOfRows, searchString, title) {
+// 		console.log("getData");
+// 		total = $(data).find("totalCount").text();
+// 		$(".hitCount").html(total + '개');
+		
+// 		let addStoreButtonHtml = `<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>`;
+//     	$(".storeButton").empty();
+//     	$(".storeButton").append(addStoreButtonHtml);
+    	
+// <!-- 	        	// 리스트 부분 비우기 -->
+//     	$("#product").empty();
+    	
+// <!-- 	        	// 리스트 생성 -->
+//     	$(data).find("item").each(function() {
+//     		const html = `
+//     			<tr class="hover" id="\${$(this).find("indexNo").text() }">
+//     				<td>
+//     					<input type="checkbox" name="test">
+//     				</td>
+// 					<td >\${$(this).find("indexNo").text() }</td>
+// 					<td ><img style="width:150px;" src="\${$(this).find("bigDrawing").text()}"/></td>
+// 					<td >\${ $(this).find("applicationNumber").text() }</td>
+// 					<td >\${ $(this).find("applicationDate").text() }</td>
+// 					<td >\${ $(this).find("applicationStatus").text() }</td>
+// 					<td >\${ $(this).find("applicantName").text() }</td>
+// 				</tr>
+//     		`
+    		
+//     		$("#product").append(html)
+    		
+//     	})
+//     	let arr = new Array();
+
+// 		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+// 		    let a = $(this).closest('form').get(0);
+// 			a.no.value = 1;
+// 			console.log(a.no.value);
+// 		});
+
+// 	};
+	
+// 	끝
 	function selectAll(selectAll)  {
 		  const checkboxes 
 		     = document.querySelectorAll('input[type="checkbox"]');
@@ -198,14 +232,6 @@ const submitForm = function(form) {
 			</div>
 		</div>
 </section>
-
-<script>
-function storedTradeMark__submitForm(form){
-	console.log("???????");
-}
-
-
-</script>
 
 
 <%@ include file="../common/foot.jsp"%>

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Trademark {
-	private int id;
+	private String id;
 	private String regDate;
 	private String updateDate;
 	private String title;

@@ -7,7 +7,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.w3c.dom.Document;
@@ -37,14 +36,14 @@ public class UserApiController {
 //		
 //		return test;
 //	}
-	@RequestMapping("/usr/home/searchTrademard")
+	@RequestMapping("/usr/home/searchTrademark")
 	@ResponseBody
-	public List<Trademark> doSearchTrademard(int numOfRows, String searchString, String title) {
+	public List<Trademark> doSearchTrademark(int numOfRows, String searchString, String title) {
 		List<Trademark> trademarks = new ArrayList<>();
 		
 		try {
 			String url = "http://kipo-api.kipi.or.kr/openapi/service/trademarkInfoSearchService/getWordSearch";
-			String serviceKey = "eCIuH7bLNd1BmdIIqpFa2FTMadwqxJ539ME6QtSZmTYlwAsadP88mzc4vBo%2BnxSaE32b6SeLZ7wKfLxE42jSxQ%3D%3D";
+			String serviceKey = "";
 			//
 //			String searchKeywork = searchString;
 			
@@ -53,6 +52,21 @@ public class UserApiController {
 			Document documentInfo = dBuilder.parse(url + "?ServiceKey=" + serviceKey + "&searchString=" + searchString);
 			
 			documentInfo.getDocumentElement().normalize();
+			
+// 			totalCount
+			
+			NodeList nCntList = documentInfo.getElementsByTagName("count");
+			for(int i = 0; i < nCntList.getLength(); i++) {
+				Node nCntNode = nCntList.item(i);
+				if(nCntNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nCntNode;
+					Trademark trademark = new Trademark();
+					trademark.setTotalCount(getTagValue("totalCount", eElement));
+//					int cnt = Integer.parseInt(getTagValue("totalCount", eElement));
+//					trademark.setTotalCount(cnt);
+				}
+			}
+			
 			System.out.println("root tag : " + documentInfo.getDocumentElement().getNodeName());
 			NodeList nList = documentInfo.getElementsByTagName("item");
 			System.out.println("파싱할 tag수 : " + nList.getLength());
@@ -92,8 +106,8 @@ public class UserApiController {
 					
 					trademarks.add(trademark);
 //					model.addAttribute("trademark", trademark);
-//					System.out.println("indexNo : " + getTagValue("indexNo", eElement));
-//					System.out.println("applicationDate : " + getTagValue("applicationDate", eElement));
+					System.out.println("indexNo : " + getTagValue("indexNo", eElement));
+					System.out.println("applicationDate : " + getTagValue("applicationDate", eElement));
 					
 				}
 			}

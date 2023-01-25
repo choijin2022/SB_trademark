@@ -3,13 +3,10 @@
 <c:set var="pageTitle" value="API" />
 <%@ include file="../common/head.jsp"%>
 
+
 <script>
 let total = 0;
 showButton = false;
-
-
-
-
 const submitForm = function(form) {
 	
 	//수정
@@ -18,7 +15,7 @@ const submitForm = function(form) {
 	let searchString = form.searchString.value.trim();
 // 		let searchRecentYear = form.searchRecentYear.value.trim();
 	let title = form.title.value.trim();
-	$.get('../home/searchTrademard', {
+	$.get('../home/searchTrademark', {
 		numOfRows : numOfRows,
 		searchString: searchString,
 		title: title,
@@ -28,7 +25,7 @@ const submitForm = function(form) {
 		console.log(data);
 // 		console.log(data[0]);
 		
-		total = $(data).find("totalCount").text();
+		total = $(data[0]).find("totalCount").text();
 		$(".hitCount").html(total + '개');
 		
 		let addStoreButtonHtml = `<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>`;
@@ -46,7 +43,6 @@ const submitForm = function(form) {
     		console.log(data[num]);
 			let index = data[num].indexNo;
 			console.log(index);
-
 //     			<form action="../home/stored" method="POST" onsubmit="storedTradeMark__submitForm(this); return false;">
     		const html = `
 	    			<tr class="hover">
@@ -62,14 +58,12 @@ const submitForm = function(form) {
 					</tr>
     		`
 // 				</form>
-
     		$("#product").append(html);
     		
     		num++;
     	})
 		
     	let arr = new Array();
-
 		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
 		    let a = $(this).closest('form').get(0);
 			a.no.value = 1;
@@ -81,9 +75,7 @@ const submitForm = function(form) {
 	return false;
 	
 }
-
 	
-
 	function selectAll(selectAll)  {
 		  const checkboxes 
 		     = document.querySelectorAll('input[type="checkbox"]');
@@ -93,7 +85,6 @@ const submitForm = function(form) {
 		  })
 		}
 	
-
 	
 	function test(){
 		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
@@ -203,9 +194,5 @@ const submitForm = function(form) {
 function storedTradeMark__submitForm(form){
 	console.log("???????");
 }
-
-
 </script>
-
-
 <%@ include file="../common/foot.jsp"%>

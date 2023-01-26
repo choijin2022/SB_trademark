@@ -14,6 +14,13 @@ public class Trademark {
 	private String title;
 	private String totalCount;
 	
+	//페이지정보
+	int page;
+	int itemsTotalCount;
+	int itemsInAPage;
+	int pagesCount;
+	
+	
 	private String indexNo;
 	private String applicantName;
 	private String applicationNumber;

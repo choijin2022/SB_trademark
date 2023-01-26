@@ -3,15 +3,15 @@ package com.cji.exam.trademark.util;
 import lombok.Data;
 
 @Data
-public class Page {
+public class PageUtil {
 	int itemTotalCount = 0; // 페이지 아이템 총 개수
 	int	pageItemCount = 10; //한 페이지에서 한번에 보여줄 페이지 아이템 개수
 	int pageCount = 1; // 
 	int currentItem = 1; //현재 아이템 번호
 
-	public Page() {
+	public PageUtil() {
 	}
-	public Page( int itemTotalCount, int pageItemCount, int pageCount, int currentItem) {
+	public PageUtil( int itemTotalCount, int pageItemCount, int pageCount, int currentItem) {
 
 		setItemTotalCount(itemTotalCount);
 		setPageCount(pageCount);
@@ -24,7 +24,7 @@ public class Page {
 
 		}
 
-		public Page setItemTotalCount(int itemTotalCount) {
+		public PageUtil setItemTotalCount(int itemTotalCount) {
 			if(itemTotalCount < 1){
 				itemTotalCount = 0;
 
@@ -42,7 +42,7 @@ public class Page {
 		}
 
 		//페이지당 보여줄 아이템개수
-		public Page setPageItemCount(int pageItemCount) {
+		public PageUtil setPageItemCount(int pageItemCount) {
 			this.pageItemCount = pageItemCount;
 			return this;
 
@@ -54,7 +54,7 @@ public class Page {
 
 		}
 
-		public Page setPageCount(int pageCount) {
+		public PageUtil setPageCount(int pageCount) {
 			this.pageCount = pageCount;
 			return this;
 
@@ -73,7 +73,7 @@ public class Page {
 			return currentPage;
 		}
 
-		public Page setCurrentPage(int currentPage) {
+		public PageUtil setCurrentPage(int currentPage) {
 			currentItem = (pageItemCount*currentPage - 1) + 1; //바로전페이지로 이동후 +1로 아이템위치셋팅
 			int totalCont = getItemTotalCount();
 			if(currentItem>getItemTotalCount()){
@@ -98,7 +98,7 @@ public class Page {
 
 		}
 
-		public Page setCurrentItem(int currentItem) throws IllegalArgumentException {
+		public PageUtil setCurrentItem(int currentItem) throws IllegalArgumentException {
 			if(currentItem>getItemTotalCount()){
 				throw new IllegalArgumentException("max over");
 			}

@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.w3c.dom.Document;
@@ -36,48 +37,42 @@ public class UserApiController {
 //		
 //		return test;
 //	}
-	@RequestMapping("/usr/home/searchTrademark")
+	@RequestMapping("/usr/home/searchTrademard")
 	@ResponseBody
-	public List<Trademark> doSearchTrademark(int numOfRows, String searchString, String title) {
+	public List<Trademark> doSearchTrademard(int numOfRows, String searchString, String title) {
 		List<Trademark> trademarks = new ArrayList<>();
+		String totalCount;
+//		int page=1;
 		
 		try {
 			String url = "http://kipo-api.kipi.or.kr/openapi/service/trademarkInfoSearchService/getWordSearch";
-			String serviceKey = "";
+			String serviceKey = "U4edfHljSlmlj96jWD%2Fc6swkeQW0otDCYK9srFWtMqjoiON7WlWpKF0NF%2F2wYAsP%2FMUdxBf7s4IHaUalVapzOg%3D%3D";
 			//
 //			String searchKeywork = searchString;
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document documentInfo = dBuilder.parse(url + "?ServiceKey=" + serviceKey + "&searchString=" + searchString);
+			Document documentInfo = dBuilder.parse(url + "?ServiceKey=" + serviceKey + "&numOfRows=" + numOfRows +"&searchString=" + searchString);
 			
 			documentInfo.getDocumentElement().normalize();
-			
-// 			totalCount
-			
-			NodeList nCntList = documentInfo.getElementsByTagName("count");
-			for(int i = 0; i < nCntList.getLength(); i++) {
-				Node nCntNode = nCntList.item(i);
-				if(nCntNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) nCntNode;
-					Trademark trademark = new Trademark();
-					trademark.setTotalCount(getTagValue("totalCount", eElement));
-//					int cnt = Integer.parseInt(getTagValue("totalCount", eElement));
-//					trademark.setTotalCount(cnt);
-				}
-			}
-			
 			System.out.println("root tag : " + documentInfo.getDocumentElement().getNodeName());
+			//수정 시작
+			
+			
+			NodeList nCoutnNode = documentInfo.getElementsByTagName("count");
+//			totalCount = getTotalCount(nCoutnNode);
+//			System.out.println("totalCount : "+totalCount);
+			
+			// 수정 끝
 			NodeList nList = documentInfo.getElementsByTagName("item");
 			System.out.println("파싱할 tag수 : " + nList.getLength());
-			
 			for(int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
 					// Trademark 객체 생성 후 저장
 					Trademark trademark = new Trademark();
-					
+//					trademark.setTotalCount(totalCount);
 					trademark.setId(getTagValue("indexNo", eElement));
 					trademark.setIndexNo(getTagValue("indexNo", eElement));
 					trademark.setApplicantName(getTagValue("applicantName", eElement));
@@ -101,16 +96,18 @@ public class UserApiController {
 					trademark.setFullText(getTagValue("fullText", eElement));
 					trademark.setDrawing(getTagValue("drawing", eElement));
 					trademark.setBigDrawing(getTagValue("bigDrawing", eElement));
-//					trademark.setTotalCount(getTagValue("totalCount", eElement));
-					System.out.println(trademark);
+					
+//					System.out.println(trademark);
 					
 					trademarks.add(trademark);
 //					model.addAttribute("trademark", trademark);
-					System.out.println("indexNo : " + getTagValue("indexNo", eElement));
-					System.out.println("applicationDate : " + getTagValue("applicationDate", eElement));
+//					System.out.println("indexNo : " + getTagValue("indexNo", eElement));
+//					System.out.println("applicationDate : " + getTagValue("applicationDate", eElement));
 					
 				}
 			}
+			
+//			paging(totalCount, numOfRows);
 			// ??
 //			model.addAttribute("trademarks", trademarks);
 //			System.out.println(trademarks);
@@ -122,6 +119,34 @@ public class UserApiController {
 		return trademarks;
 	}
 	
+	private void paging(String totalCount, int numOfRows) {
+		int totalCnt = Integer.parseInt(totalCount);
+		int pageMenuLen = numOfRows;
+		int startPage = 1;
+		int endPage = totalCnt/numOfRows;
+		
+		int itemsInAPage = 10;
+
+		int pagesCount = (int) Math.ceil((double) totalCnt / itemsInAPage);
+		
+	}
+
+	private String getTotalCount(NodeList nCoutnNode) {
+		String totalCount="";
+		for(int temp = 0; temp < nCoutnNode.getLength(); temp++) {
+			Node nCntNode = nCoutnNode.item(temp);
+			if(nCntNode.getNodeType() == Node.ELEMENT_NODE) {
+				Element eElement = (Element) nCntNode;
+				
+				totalCount = getTagValue("totalCount", eElement);
+				
+			}
+			
+		}		
+		
+		return totalCount;
+	}
+
 	private static String getTagValue(String tag, Element eElement) {
 		NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
 		Node nValue = (Node) nlList.item(0);

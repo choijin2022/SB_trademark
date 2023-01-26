@@ -3,10 +3,13 @@
 <c:set var="pageTitle" value="API" />
 <%@ include file="../common/head.jsp"%>
 
-
 <script>
 let total = 0;
 showButton = false;
+
+
+
+
 const submitForm = function(form) {
 	
 	//수정
@@ -15,7 +18,7 @@ const submitForm = function(form) {
 	let searchString = form.searchString.value.trim();
 // 		let searchRecentYear = form.searchRecentYear.value.trim();
 	let title = form.title.value.trim();
-	$.get('../home/searchTrademark', {
+	$.get('../home/searchTrademard', {
 		numOfRows : numOfRows,
 		searchString: searchString,
 		title: title,
@@ -23,13 +26,11 @@ const submitForm = function(form) {
 	}, function(data){
 		
 		console.log(data);
-// 		console.log(data[0]);
 		
-		total = $(data[0]).find("totalCount").text();
+		total = data[0].totalCount;
 		$(".hitCount").html(total + '개');
 		
 		let addStoreButtonHtml = `<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>`;
-//     	$(".storeButton").empty();
     	$(".storeButton").html(addStoreButtonHtml);
     	
 <!-- 	        	// 리스트 부분 비우기 -->
@@ -43,6 +44,7 @@ const submitForm = function(form) {
     		console.log(data[num]);
 			let index = data[num].indexNo;
 			console.log(index);
+
 //     			<form action="../home/stored" method="POST" onsubmit="storedTradeMark__submitForm(this); return false;">
     		const html = `
 	    			<tr class="hover">
@@ -58,12 +60,14 @@ const submitForm = function(form) {
 					</tr>
     		`
 // 				</form>
+
     		$("#product").append(html);
     		
     		num++;
     	})
 		
     	let arr = new Array();
+
 		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
 		    let a = $(this).closest('form').get(0);
 			a.no.value = 1;
@@ -75,7 +79,9 @@ const submitForm = function(form) {
 	return false;
 	
 }
+
 	
+
 	function selectAll(selectAll)  {
 		  const checkboxes 
 		     = document.querySelectorAll('input[type="checkbox"]');
@@ -85,6 +91,7 @@ const submitForm = function(form) {
 		  })
 		}
 	
+
 	
 	function test(){
 		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
@@ -181,7 +188,6 @@ const submitForm = function(form) {
 			</table>
 			<div class="storeButton"></div>
 		</form>
-		<a href="/usr/home/test" class="btn btn-active btn-ghost btn-sm mr-2">test</a>
 	</div>
 	<div class="pageNav flex justify-center mt-5">
 			<div class="btn-group">
@@ -194,5 +200,41 @@ const submitForm = function(form) {
 function storedTradeMark__submitForm(form){
 	console.log("???????");
 }
+
+
 </script>
+<section>
+	<div class="page-menu mt-2 flex justify-center">
+		<div class="btn-group">
+			<c:set var="pageMenuLen" value="5" />
+		<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1}" />
+		<c:set var="endPage" value="${page + pageMenuLen <= pagesCount ? page + pageMenuLen : pagesCount}" />
+		
+		<c:set var="pageBaseUri" value="?searchKeywordTypeCode=${searchKeywordTypeCode }&searchKeyword=${searchKeyword }" />
+	
+		<c:if test="${membersCount != 0 }">
+			<c:if test="${page == 1 }">
+				<a class="btn btn-sm btn-disabled">«</a>
+				<a class="btn btn-sm btn-disabled">&lt;</a>
+			</c:if>
+			<c:if test="${page > 1 }">
+				<a class="btn btn-sm" href="${pageBaseUri }&page=1">«</a>
+				<a class="btn btn-sm" href="${pageBaseUri }&page=${page - 1 }">&lt;</a>
+			</c:if>
+			<c:forEach begin="${startPage }" end="${endPage }" var="i">
+				<a class="btn btn-sm ${page == i ? 'btn-active' : ''}" href="${pageBaseUri }&page=${i }">${i }</a>
+			</c:forEach>
+			<c:if test="${page < pagesCount }">
+				<a class="btn btn-sm" href="${pageBaseUri }&page=${page + 1 }">&gt;</a>
+				<a class="btn btn-sm" href="${pageBaseUri }&page=${pagesCount }">»</a>
+			</c:if>
+			<c:if test="${page == pagesCount }">
+				<a class="btn btn-sm btn-disabled">&gt;</a>
+				<a class="btn btn-sm btn-disabled">»</a>
+			</c:if>
+		</c:if>
+		</div>
+	</div>
+</section>
+
 <%@ include file="../common/foot.jsp"%>

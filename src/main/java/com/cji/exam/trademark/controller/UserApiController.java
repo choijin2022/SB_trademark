@@ -7,14 +7,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.cji.exam.trademark.vo.Page;
 import com.cji.exam.trademark.vo.Trademark;
 
 @Controller
@@ -33,11 +34,9 @@ public class UserApiController {
 //		return test;
 //	}
 	@RequestMapping("/usr/home/searchTrademard")
-	@ResponseBody
-	public List<Trademark> doSearchTrademard(int numOfRows, String searchString, String title) {
+	public String doSearchTrademard(Model model, @RequestParam(defaultValue = "1") int page,int numOfRows, String searchString, String title) {
 		List<Trademark> trademarks = new ArrayList<>();
 		String totalCount;
-		int page = 1;
 		
 		try {
 			String url = "http://kipo-api.kipi.or.kr/openapi/service/trademarkInfoSearchService/getWordSearch";
@@ -73,6 +72,7 @@ public class UserApiController {
 					// Trademark 객체 생성 후 저장
 					Trademark trademark = new Trademark();
 					
+					trademark.setSearchString(searchString);
 					trademark.setTotalCount(totalCount);
 					trademark.setId(getTagValue("indexNo", eElement));
 					trademark.setIndexNo(getTagValue("indexNo", eElement));
@@ -119,14 +119,14 @@ public class UserApiController {
 				}
 			}
 			// ??
-//			model.addAttribute("trademarks", trademarks);
-//			System.out.println(trademarks);
+			model.addAttribute("trademarks", trademarks);
+			System.out.println(trademarks);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return trademarks;
+		return "usr/home/searchTrademard";
 	}
 	
 	private int setPage(int page, int totalCnt, int numOfRows) {

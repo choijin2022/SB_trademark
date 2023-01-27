@@ -4,113 +4,102 @@
 <%@ include file="../common/head.jsp"%>
 
 <script>
-function Trademark_getData(){
+let total = 0;
+showButton = false;
+
+
+
+
+const submitForm = function(form) {
+	
+	//수정
+	
+	let numOfRows = form.numOfRows.value.trim();
+	let searchString = form.searchString.value.trim();
+// 		let searchRecentYear = form.searchRecentYear.value.trim();
+	let title = form.title.value.trim();
+	$.get('../home/searchTrademard', {
+		numOfRows : numOfRows,
+		searchString: searchString,
+		title: title,
+		ajaxMode : 'Y'
+	}, function(data){
+		
+		console.log(data);
+		
+		total = data[0].totalCount;
+		$(".hitCount").html(total + '개');
+		
+		let addStoreButtonHtml = `<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>`;
+    	$(".storeButton").html(addStoreButtonHtml);
+    	
+<!-- 	        	// 리스트 부분 비우기 -->
+    	$("#product").empty();
+    	
+<!-- 	        	// 리스트 생성 -->
+		
+		let num = 0;
+    	$(data).each(function() {
+    		
+    		console.log(data[num]);
+			let index = data[num].indexNo;
+			console.log(index);
+
+//     			<form action="../home/stored" method="POST" onsubmit="storedTradeMark__submitForm(this); return false;">
+    		const html = `
+	    			<tr class="hover">
+	    				<td>
+	    					<input type="checkbox" name="test">
+	    				</td>
+						<td >\${index}</td>
+						<td ><img style="width:150px;" src="\${data[num].bigDrawing}"/></td>
+						<td >\${data[num].applicationNumber}</td>
+						<td >\${data[num].applicationDate}</td>
+						<td >\${data[num].applicationStatus}</td>
+						<td >\${data[num].applicantName}</td>
+					</tr>
+    		`
+// 				</form>
+
+    		$("#product").append(html);
+    		
+    		num++;
+    	})
+		
+    	//페이지
+    	$(".page-menu").empty();
+    	
+    	let pageHtml = `
+    	
+   		<div class="btn-group">
+   			<c:set var="pageMenuLen" value="5" />
+   			<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1}" />
+			<c:set var="endPage" value="${page + pageMenuLen <= pagesCount ? page + pageMenuLen : pagesCount}" />
+		
+			
+		</div>
+		
+		`
+    	$(".page-menu").append(pageHtml);
+    	console.log(pageMenuLen);	
+		console.log(startPage);	
+		
+    	//페이지 수정 끝
+    	
+    	let arr = new Array();
+
+		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+		    let a = $(this).closest('form').get(0);
+			a.no.value = 1;
+			console.log(a.no.value);
+		});
+		
+	}, 'json');
+	
+	return false;
 	
 }
 
-
-
- const submitForm = function(form) {
-<!-- 		유효성 검사는 하지않았습니다. -->
-		
-<!-- 		폼에 입력된 내용을 변수로 저장 -->
-		let numOfRows = form.numOfRows.value.trim();
-		let searchString = form.searchString.value.trim();
-// 		let searchRecentYear = form.searchRecentYear.value.trim();
-		let title = form.title.value.trim();
-		
-<!-- 		입력을 안했을 경우 기본 값 설정 -->
-// 		if (searchRecentYear.length == 0) {
-// 			searchRecentYear = 0;
-// 		}
-		if (title.length == 0) {
-			title = "";
-		}
-		
-<!-- 		받은 내용을 토대로 AJAX 함수 실행 -->
-		getData(numOfRows, searchString, title);
-		
-		return false;
-	};
-	let total = 0;
-	showButton = false;
-	
-<!-- 	AJAX 함수 -->
-	const getData = function(numOfRows, searchString, title) {
-<!-- 		// CORS 우회를 위한 프록시 사이트, 해당 사이트에 들어가서 체크 버튼을 누르고 사용 -->
-		const proxy = "https://cors-anywhere.herokuapp.com/";
-<!-- 		// 공공데이터포탈 XML 을 받아오는 URL -->
-		const url = "http://kipo-api.kipi.or.kr/openapi/service/trademarkInfoSearchService/getWordSearch";
-<!-- 		// 공공데이터포탈 API Key -->
-		const API_KEY = "eCIuH7bLNd1BmdIIqpFa2FTMadwqxJ539ME6QtSZmTYlwAsadP88mzc4vBo%2BnxSaE32b6SeLZ7wKfLxE42jSxQ%3D%3D";
-		
-<!-- 		// 파라미터 정리 -->
-		let queryParams  = "?" + encodeURIComponent("serviceKey") + "=" + API_KEY;
-			queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(numOfRows);
-			queryParams += "&" + encodeURIComponent("searchString") + "=" + encodeURIComponent(searchString);
-			queryParams += "&" + encodeURIComponent("title") + "=" + encodeURIComponent(title);
-			
-<!-- 		// AJAX 실행 부분 -->
-		$.ajax({
-	        url: proxy + url + queryParams,	// URL
-	        cache: false,					// CACHE 저장 여부
-	        dataType: "xml",				// 데이터 타입
-	        success: function(data) {
- 	        	console.log(data);
- 	        	total = $(data).find("totalCount").text();
- 	        	$(".hitCount").html(total + '개');
- 	        	
-<!-- 	        	// XML을 불러왔으나 성공적으로 못불러온 경우 -->
-	        	let successYN = $(data).find("successYN").text();
-	        	let resultMsg = $(data).find("resultMsg").text();
-	        	
-	        	if(successYN == "N" ) {
-	        		alert(resultMsg);
-	        		return false;
-	        	}
-	        	
-	        	let addStoreButtonHtml = `<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>`;
-	        	$(".storeButton").empty();
-	        	$(".storeButton").append(addStoreButtonHtml);
-	        	
-<!-- 	        	// 리스트 부분 비우기 -->
-	        	$("#product").empty();
-	        	
-<!-- 	        	// 리스트 생성 -->
-	        	$(data).find("item").each(function() {
-	        		const html = `
-	        			<tr class="hover" id="\${$(this).find("indexNo").text() }">
-	        				<td>
-	        					<input type="checkbox" name="test">
-	        				</td>
-							<td >\${$(this).find("indexNo").text() }</td>
-							<td ><img style="width:150px;" src="\${$(this).find("bigDrawing").text()}"/></td>
-							<td >\${ $(this).find("applicationNumber").text() }</td>
-							<td >\${ $(this).find("applicationDate").text() }</td>
-							<td >\${ $(this).find("applicationStatus").text() }</td>
-							<td >\${ $(this).find("applicantName").text() }</td>
-						</tr>
-	        		`
-	        		
-	        		$("#product").append(html)
-	        		
-	        	})
-	        	let arr = new Array();
-
-				$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
-				    let a = $(this).closest('form').get(0);
-					a.no.value = 1;
-					console.log(a.no.value);
-				});
-	        },
-	        error: function(){
-<!-- 	        	// XML 로딩 실패 -->
-	        	
-	            alert('Error loading XML document');
-	        }
-	
-	    })
-	};
 	
 
 	function selectAll(selectAll)  {
@@ -122,14 +111,16 @@ function Trademark_getData(){
 		  })
 		}
 	
-// 	function test(){
-// 		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
-// 		    let a = $(this).closest('form').get(0);
-// 			a.no.value = 1;
-// 			console.log(a.no.value);
-// 		});
-// 		return false;
-// 	}
+
+	
+	function test(){
+		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+		    let a = $(this).closest('form').get(0);
+			a.no.value = 1;
+			console.log(a.no.value);
+		});
+		return false;
+	}
 				
 // 	$("#arrayParam").val(array);
 		
@@ -140,7 +131,9 @@ function Trademark_getData(){
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-		<form onsubmit="return submitForm(this);">
+<!-- 		<form action="searchTrademard" method="POST" onsubmit="submitForm(this); return false;"> -->
+			<form onsubmit="return submitForm(this);">
+<%-- 			<input type="hidden" name="numOfRows" value="${numOfRows }" /> --%>
 			<div class="table-box-type-1">
 				<table class="table table-zebra w-full">
 <%-- 					<colgroup> --%>
@@ -161,7 +154,7 @@ function Trademark_getData(){
 						<tr>
 							<th>단어</th>
 							<td>
-								<input maxlength="38" class="input input-ghost w-full text-lg border-gray-400" type="text" name="searchString" placeholder="단어" />
+								<input maxlength="38" class="input input-ghost w-full text-lg border-gray-400" type="text" name="searchString" placeholder="단어" value="${searchKeyword }"/>
 							</td>
 						</tr>
 <!-- 						<tr> -->
@@ -170,10 +163,10 @@ function Trademark_getData(){
 <!-- 						</tr> -->
 						<tr>
 							<th>제목</th>
-							<td><input maxlength="800" class="input input-ghost w-full text-lg border-gray-400" type="text" name="title" placeholder="제목" /></td>
+							<td><input maxlength="800" class="input input-ghost w-full text-lg border-gray-400" type="text" name="title" placeholder="제목" value="${title}" /></td>
 						</tr>
 						<tr>
-							<td colspan="2"><button class="btn btn-outline btn-accent w-full">검색</button></td>
+							<td colspan="2"><button class="btn btn-outline btn-accent w-full do-search-form">검색</button></td>
 						</tr>
 						
 					</tbody>
@@ -182,6 +175,9 @@ function Trademark_getData(){
 		</form>
 	</div>
 </section>
+
+
+
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
@@ -212,7 +208,6 @@ function Trademark_getData(){
 			</table>
 			<div class="storeButton"></div>
 		</form>
-		<a href="/usr/home/test" class="btn btn-active btn-ghost btn-sm mr-2">test</a>
 	</div>
 	<div class="pageNav flex justify-center mt-5">
 			<div class="btn-group">
@@ -221,5 +216,20 @@ function Trademark_getData(){
 		</div>
 </section>
 
+<script>
+function storedTradeMark__submitForm(form){
+	console.log("???????");
+}
+
+
+</script>
+
+
+<section>
+	<div class="page-menu mt-2 flex justify-center">
+	
+	
+	</div>
+</section>
 
 <%@ include file="../common/foot.jsp"%>

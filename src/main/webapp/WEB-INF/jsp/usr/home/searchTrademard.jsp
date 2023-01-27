@@ -7,18 +7,28 @@
 let total = 0;
 showButton = false;
 
+function list(){
+	let page = ${trademarks[0].page};
+	let itemsInAPage = ${trademarks[0].itemsInAPage};
+	let itemsTotalCount = ${trademarks[0].itemsTotalCount};
+	let pagesCount = ${trademarks[0].pagesCount};
+	
+	for (var i = 0; i <pagesCount ; i++) {
+		  alert(i);
+		}
+
+	
+}
 
 
-
-const submitForm = function(form) {
+// const submitForm = function(form) {
 	
-	//수정
+// 	//수정
 	
-	let numOfRows = form.numOfRows.value.trim();
-	let searchString = form.searchString.value.trim();
-// 		let searchRecentYear = form.searchRecentYear.value.trim();
-	let title = form.title.value.trim();
-	
+// 	let numOfRows = form.numOfRows.value.trim();
+// 	let searchString = form.searchString.value.trim();
+// // 		let searchRecentYear = form.searchRecentYear.value.trim();
+// 	let title = form.title.value.trim();
 // 	$.get('../home/searchTrademard', {
 // 		numOfRows : numOfRows,
 // 		searchString: searchString,
@@ -98,8 +108,8 @@ const submitForm = function(form) {
 // 	}, 'json');
 	
 // 	return false;
-	form.submit();
-}
+	
+// }
 
 	
 
@@ -123,12 +133,17 @@ const submitForm = function(form) {
 		return false;
 	}
 				
+// 	$("#arrayParam").val(array);
+		
+// 	$("#form").attr("action", "/test/test.do");  
+// 	$("#form").submit();
+	
 </script>
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-		<form action="searchTrademard" method="POST" onsubmit="submitForm(this); return false;">
-<!-- 			<form onsubmit="return submitForm(this);"> -->
+<!-- 		<form action="searchTrademard" method="POST" onsubmit="submitForm(this); return false;"> -->
+			<form onsubmit="return submitForm(this);">
 <%-- 			<input type="hidden" name="numOfRows" value="${numOfRows }" /> --%>
 			<div class="table-box-type-1">
 				<table class="table table-zebra w-full">
@@ -150,7 +165,8 @@ const submitForm = function(form) {
 						<tr>
 							<th>단어</th>
 							<td>
-								<input maxlength="38" class="input input-ghost w-full text-lg border-gray-400" type="text" name="searchString" placeholder="단어" value="${searchKeyword }"/>
+								<input maxlength="38" class="input input-ghost w-full text-lg border-gray-400" type="text" name="searchString" placeholder="단어" value="${trademarks[0].searchString}"/>
+								<div></div>
 							</td>
 						</tr>
 <!-- 						<tr> -->
@@ -199,10 +215,24 @@ const submitForm = function(form) {
 				</thead>
 	
 				<tbody id="product">
-					
+					<c:if test="${trademarks[0].itemsTotalCount != 0 }">
+						<span> ${trademarks[0].itemsTotalCount} </span >
+						<c:forEach var="trademarks" items="${trademarks}" begin="0" end="${trademarks[0].itemsInAPage}" step="1" varStatus="status">
+								<tr class="hover">
+									<td><input type="checkbox" name="test"></td>
+									<td>${trademarks.indexNo}</td>
+									<td><img style="width:150px;" src="${trademarks.bigDrawing}"/></td>
+									<td>${trademarks.applicationNumber}</td>
+									<td>${trademarks.applicationDate}</td>
+									<td>${trademarks.applicationStatus}</td>
+									<td>${trademarks.applicantName}</td>
+								</tr>
+							</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			<div class="storeButton"></div>
+			<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>
 		</form>
 	</div>
 	<div class="pageNav flex justify-center mt-5">
@@ -223,9 +253,39 @@ function storedTradeMark__submitForm(form){
 
 <section>
 	<div class="page-menu mt-2 flex justify-center">
-	
-	
-	</div>
+			<div class="btn-group">
+				<c:set var="page" value="${trademarks[0].page}" />
+				<c:set var="pagesCount" value="${trademarks[0].pagesCount}" />
+				<c:set var="pageMenuLen" value="5" />
+				<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1}" />
+				<c:set var="endPage" value="${page + pageMenuLen <= pagesCount ? page + pageMenuLen : pagesCount}" />
+				
+				<c:set var="pageBaseUri" value="?boardId=${boardId }&searchKeywordTypeCode=${searchKeywordTypeCode }&searchKeyword=${searchKeyword }" />
+				<c:if test="${trademarks[0].totalCount != 0 }">
+					<c:if test="${page == 1 }">
+						<a class="btn btn-sm btn-disabled">«</a>
+						<a class="btn btn-sm btn-disabled">&lt;</a>
+					</c:if>
+					<c:if test="${page > 1 }">
+						<a class="btn btn-sm" href="${pageBaseUri }&page=1">«</a>
+						<a class="btn btn-sm" href="${pageBaseUri }&page=${page - 1 }">&lt;</a>
+					</c:if>
+					<c:forEach begin="${startPage }" end="${endPage }" var="i">
+						<a class="btn btn-sm ${page == i ? 'btn-active' : ''}" href="${pageBaseUri }&page=${i }">${i }</a>
+					</c:forEach>
+					<c:if test="${page < pagesCount }">
+						<a class="btn btn-sm" href="${pageBaseUri }&page=${page + 1 }">&gt;</a>
+						<a class="btn btn-sm" href="${pageBaseUri }&page=${pagesCount }">»</a>
+					</c:if>
+					<c:if test="${page == pagesCount }">
+						<a class="btn btn-sm btn-disabled">&gt;</a>
+						<a class="btn btn-sm btn-disabled">»</a>
+					</c:if>
+				</c:if>
+			</div>
+		</div>
 </section>
+
+
 
 <%@ include file="../common/foot.jsp"%>

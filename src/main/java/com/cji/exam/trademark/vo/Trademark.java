@@ -13,6 +13,7 @@ public class Trademark {
 	private String updateDate;
 	private String title;
 	private String totalCount;
+	private String searchString;
 	
 	//페이지정보
 	int page;

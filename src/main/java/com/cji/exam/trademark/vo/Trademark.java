@@ -16,10 +16,10 @@ public class Trademark {
 	private String searchString;
 	
 	//페이지정보
-	int page;
-	int itemsTotalCount;
-	int itemsInAPage;
-	int pagesCount;
+	private int page;
+	private int itemsTotalCount;
+	private int itemsInAPage;
+	private int pagesCount;
 	
 	
 	private String indexNo;
@@ -43,7 +43,18 @@ public class Trademark {
 	private String viennaCode;
 	private String agentName;
 	private String regPrivilegeName;
+//	private String title;
 	private String fullText;
 	private String drawing;
 	private String bigDrawing;
+	
+	// 상태
+//	private boolean addStatus;
+//	public String addStatusStr() {
+//		if(addStatus == false) {
+//			return "없음";
+//		}
+//		return "저장";
+//	}
+	
 }

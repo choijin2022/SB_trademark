@@ -177,7 +177,6 @@ const submitForm = function(form) {
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-		<h2>total<span class="ml-2 text-base hitCount"></span></h2>
 		<form >
 			<input type="hidden" name="no"/>
 			<input type="hidden" name="img"/>

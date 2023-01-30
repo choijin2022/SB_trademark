@@ -74,7 +74,6 @@ public class UserApiController {
 					
 					trademark.setSearchString(searchString);
 					trademark.setTotalCount(totalCount);
-					trademark.setId(getTagValue("indexNo", eElement));
 					trademark.setIndexNo(getTagValue("indexNo", eElement));
 					trademark.setApplicantName(getTagValue("applicantName", eElement));
 					trademark.setApplicationNumber(getTagValue("applicationNumber", eElement));

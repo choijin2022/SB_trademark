@@ -3,148 +3,10 @@
 <c:set var="pageTitle" value="API" />
 <%@ include file="../common/head.jsp"%>
 
-<script>
-let total = 0;
-showButton = false;
-
-function list(){
-	let page = ${trademarks[0].page};
-	let itemsInAPage = ${trademarks[0].itemsInAPage};
-	let itemsTotalCount = ${trademarks[0].itemsTotalCount};
-	let pagesCount = ${trademarks[0].pagesCount};
-	
-	for (var i = 0; i <pagesCount ; i++) {
-		  alert(i);
-		}
-
-	
-}
-
-
-// const submitForm = function(form) {
-	
-// 	//수정
-	
-// 	let numOfRows = form.numOfRows.value.trim();
-// 	let searchString = form.searchString.value.trim();
-// // 		let searchRecentYear = form.searchRecentYear.value.trim();
-// 	let title = form.title.value.trim();
-// 	$.get('../home/searchTrademard', {
-// 		numOfRows : numOfRows,
-// 		searchString: searchString,
-// 		title: title,
-// 		ajaxMode : 'Y'
-// 	}, function(data){
-		
-// 		console.log(data);
-		
-// 		total = data[0].totalCount;
-// 		$(".hitCount").html(total + '개');
-		
-// 		let addStoreButtonHtml = `<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>`;
-//     	$(".storeButton").html(addStoreButtonHtml);
-    	
-// <!-- 	        	// 리스트 부분 비우기 -->
-//     	$("#product").empty();
-    	
-// <!-- 	        	// 리스트 생성 -->
-		
-// 		let num = 0;
-//     	$(data).each(function() {
-    		
-//     		console.log(data[num]);
-// 			let index = data[num].indexNo;
-// 			console.log(index);
-
-// //     			<form action="../home/stored" method="POST" onsubmit="storedTradeMark__submitForm(this); return false;">
-//     		const html = `
-// 	    			<tr class="hover">
-// 	    				<td>
-// 	    					<input type="checkbox" name="test">
-// 	    				</td>
-// 						<td >\${index}</td>
-// 						<td ><img style="width:150px;" src="\${data[num].bigDrawing}"/></td>
-// 						<td >\${data[num].applicationNumber}</td>
-// 						<td >\${data[num].applicationDate}</td>
-// 						<td >\${data[num].applicationStatus}</td>
-// 						<td >\${data[num].applicantName}</td>
-// 					</tr>
-//     		`
-// // 				</form>
-
-//     		$("#product").append(html);
-    		
-//     		num++;
-//     	})
-		
-//     	//페이지
-//     	$(".page-menu").empty();
-    	
-//     	let pageHtml = `
-    	
-//    		<div class="btn-group">
-//    			<c:set var="pageMenuLen" value="5" />
-//    			<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1}" />
-// 			<c:set var="endPage" value="${page + pageMenuLen <= pagesCount ? page + pageMenuLen : pagesCount}" />
-		
-			
-// 		</div>
-		
-// 		`
-//     	$(".page-menu").append(pageHtml);
-//     	console.log(pageMenuLen);	
-// 		console.log(startPage);	
-		
-//     	//페이지 수정 끝
-    	
-//     	let arr = new Array();
-
-// 		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
-// 		    let a = $(this).closest('form').get(0);
-// 			a.no.value = 1;
-// 			console.log(a.no.value);
-// 		});
-		
-// 	}, 'json');
-	
-// 	return false;
-	
-// }
-
-	
-
-	function selectAll(selectAll)  {
-		  const checkboxes 
-		     = document.querySelectorAll('input[type="checkbox"]');
-		  
-		  checkboxes.forEach((checkbox) => {
-		    checkbox.checked = selectAll.checked
-		  })
-		}
-	
-
-	
-	function test(){
-		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
-		    let a = $(this).closest('form').get(0);
-			a.no.value = 1;
-			console.log(a.no.value);
-		});
-		return false;
-	}
-				
-// 	$("#arrayParam").val(array);
-		
-// 	$("#form").attr("action", "/test/test.do");  
-// 	$("#form").submit();
-	
-</script>
-
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
 <!-- 		<form action="searchTrademard" method="POST" onsubmit="submitForm(this); return false;"> -->
-			<form onsubmit="return submitForm(this);">
-<%-- 			<input type="hidden" name="numOfRows" value="${numOfRows }" /> --%>
+			<form>
 			<div class="table-box-type-1">
 				<table class="table table-zebra w-full">
 <%-- 					<colgroup> --%>
@@ -178,7 +40,7 @@ function list(){
 							<td><input maxlength="800" class="input input-ghost w-full text-lg border-gray-400" type="text" name="title" placeholder="제목" value="${title}" /></td>
 						</tr>
 						<tr>
-							<td colspan="2"><button class="btn btn-outline btn-accent w-full do-search-form">검색</button></td>
+							<td colspan="2"><button class="btn btn-outline btn-accent w-full ">검색</button></td>
 						</tr>
 						
 					</tbody>
@@ -188,23 +50,45 @@ function list(){
 	</div>
 </section>
 
+<script>
 
+$('.checkbox-all-member-id').change(function() {
+	const allCheck = $(this);
+	const allChecked = allCheck.prop('checked');
+	$('.checkbox-member-id').prop('checked', allChecked);
+	$('.checkbox-member-id:is(:disabled)').prop('checked', false)
+})
+
+$('.checkbox-member-id').change(function() {
+	const checkboxMemberIdCount = $('.checkbox-member-id').length;
+	const checkboxMemberIdCheckedCount = $('.checkbox-member-id:checked').length;
+	const checkboxDisabledCount = $('.checkbox-member-id:is(:disabled)').length;
+	const allChecked = (checkboxMemberIdCount - checkboxDisabledCount) == checkboxMemberIdCheckedCount;
+	$('.checkbox-all-member-id').prop('checked', allChecked);
+})
+
+function selectAllTrademark(selectAll)  {
+	  const checkboxes 
+	     = document.querySelectorAll('input[type="checkbox"]');
+	  
+	  checkboxes.forEach((checkbox) => {
+	    checkbox.checked = selectAll.checked
+	  })
+}
+
+
+
+</script>
 
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-		<h2>total<span class="ml-2 text-base hitCount"></span></h2>
-		<form >
-			<input type="hidden" name="no"/>
-			<input type="hidden" name="img"/>
-			<input type="hidden" name="an"/>
-			<input type="hidden" name="ad"/>
-			<input type="hidden" name="as"/>
-			<input type="hidden" name="aname"/>
+<!-- 		<form action="../workSpace/storedTrademark" method="POST" onsubmit="submitForm(this); return false;"> -->
 			<table class="table table-zebra w-full">
 				<thead>
 					<tr>
-						<th class="text-sm"><input type="checkbox" onclick='selectAll(this)'></th>
+						<th class="text-sm"><input type="checkbox" class="checkbox-all-member-id" onclick='selectAllTrademark(this)'></th>
+<!-- 						<th class="text-sm"><input type="checkbox" class="checkbox-all-member-id" ></th> -->
 						<th class="text-sm">No</th>
 						<th class="text-sm">이미지</th>
 						<th class="text-sm">출원번호</th>
@@ -216,24 +100,26 @@ function list(){
 	
 				<tbody id="product">
 					<c:if test="${trademarks[0].itemsTotalCount != 0 }">
-						<span> ${trademarks[0].itemsTotalCount} </span >
-						<c:forEach var="trademarks" items="${trademarks}" begin="0" end="${trademarks[0].itemsInAPage}" step="1" varStatus="status">
+						<h2><span class="ml-2 text-base hitCount"> total ${trademarks[0].itemsTotalCount} </span ></h2>
+						<c:forEach var="trademark" items="${trademarks}" begin="0" end="${trademarks[0].itemsInAPage}" step="1" varStatus="status">
+<%-- 								<input type="hidden" name="${trademark.indexNo}" value="${trademark}"/> --%>
+								
 								<tr class="hover">
-									<td><input type="checkbox" name="test"></td>
-									<td>${trademarks.indexNo}</td>
-									<td><img style="width:150px;" src="${trademarks.bigDrawing}"/></td>
-									<td>${trademarks.applicationNumber}</td>
-									<td>${trademarks.applicationDate}</td>
-									<td>${trademarks.applicationStatus}</td>
-									<td>${trademarks.applicantName}</td>
+									<td><input type="checkbox" class="checkbox-member-id" value="${trademark.indexNo},${trademark.applicantName},${trademark.applicationDate}" /></td>
+<%-- 									<td><input type="checkbox" class="checkbox-member-id" value="${trademark}" /></td> --%>
+									<td>${trademark.indexNo}</td>
+									<td><img style="width:150px;" src="${trademark.bigDrawing}"/></td>
+									<td>${trademark.applicationNumber}</td>
+									<td>${trademark.applicationDate}</td>
+									<td>${trademark.applicationStatus}</td>
+									<td>${trademark.applicantName}</td>
 								</tr>
 							</c:forEach>
 					</c:if>
 				</tbody>
 			</table>
-			<div class="storeButton"></div>
-			<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>
-		</form>
+			
+<!-- 		</form> -->
 	</div>
 	<div class="pageNav flex justify-center mt-5">
 			<div class="btn-group">
@@ -242,17 +128,48 @@ function list(){
 		</div>
 </section>
 
+<div class="storeButton mt-2 flex justify-end">
+	<button class="btn btn-outline btn-accent container justify-center mt-5 btn-stored-selected-trademark" >저장</button>
+</div>
+
+<!-- <form method="POST" name="do-stored-trademark-form" action="../workSpace/storedTrademark" onsubmit="return false;"> -->
+<form method="POST" name="do-stored-trademark-form" action="../workSpace/storedTrademark" >
+
+	<input type="hidden" name="indexNo" value="" />
+	<input type="hidden" name="applicantName" value="" />
+	<input type="hidden" name="applicationDate" value="" />
+</form>
+		
 <script>
-function storedTradeMark__submitForm(form){
-	console.log("???????");
-}
 
-
+	$('.btn-stored-selected-trademark').click(function() {
+		const values = $('.checkbox-member-id:checked').map((index, el) => el.value).toArray();
+		if (values.length == 0) {
+			alert('선택한 상표가 없습니다');
+			return;
+		}
+		if (confirm('선택한 상표를 저장하시겠습니까?') == false) {
+			return;
+		}
+// 		let valuesJsonStr = JSON.stringify(values);
+		console.log(values);
+		let valuesArr = values[0].split(',')
+// 		console.log(valuesArr);
+		$('input[name=indexNo]').val(valuesArr[0]);
+		$('input[name=applicantName]').val(valuesArr[1]);
+		$('input[name=applicationDate]').val(valuesArr[2]);
+// 		$('input[name=trademark]').val(valuesJsonStr);
+// 		let selectTrademarks = $('input[name=ids]').val(values.join(','));
+// 		console.log($('input[name=trademark]').val());
+// 		alert(selectTrademarks);
+// 		$('form[name=do-stored-trademark-form]').submit();
+// 		console.log($('form[name=do-stored-trademark-form]'));
+	})
 </script>
 
 
 <section>
-	<div class="page-menu mt-2 flex justify-center">
+	<div class="page-menu mt-3 flex justify-center">
 			<div class="btn-group">
 				<c:set var="page" value="${trademarks[0].page}" />
 				<c:set var="pagesCount" value="${trademarks[0].pagesCount}" />

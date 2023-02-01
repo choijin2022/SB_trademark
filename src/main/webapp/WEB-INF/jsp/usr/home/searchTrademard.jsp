@@ -51,14 +51,12 @@
 </section>
 
 <script>
-
 $('.checkbox-all-member-id').change(function() {
 	const allCheck = $(this);
 	const allChecked = allCheck.prop('checked');
 	$('.checkbox-member-id').prop('checked', allChecked);
 	$('.checkbox-member-id:is(:disabled)').prop('checked', false)
 })
-
 $('.checkbox-member-id').change(function() {
 	const checkboxMemberIdCount = $('.checkbox-member-id').length;
 	const checkboxMemberIdCheckedCount = $('.checkbox-member-id:checked').length;
@@ -66,7 +64,6 @@ $('.checkbox-member-id').change(function() {
 	const allChecked = (checkboxMemberIdCount - checkboxDisabledCount) == checkboxMemberIdCheckedCount;
 	$('.checkbox-all-member-id').prop('checked', allChecked);
 })
-
 function selectAllTrademark(selectAll)  {
 	  const checkboxes 
 	     = document.querySelectorAll('input[type="checkbox"]');
@@ -75,9 +72,6 @@ function selectAllTrademark(selectAll)  {
 	    checkbox.checked = selectAll.checked
 	  })
 }
-
-
-
 </script>
 
 
@@ -105,7 +99,7 @@ function selectAllTrademark(selectAll)  {
 <%-- 								<input type="hidden" name="${trademark.indexNo}" value="${trademark}"/> --%>
 								
 								<tr class="hover">
-									<td><input type="checkbox" class="checkbox-member-id" value="${trademark.indexNo},${trademark.applicantName},${trademark.applicationDate}" /></td>
+									<td><input type="checkbox" class="checkbox-member-id" value="${trademark.indexNo},${trademark.applicantName},${trademark.applicationNumber},${trademark.applicationDate},${trademark.publicationNumber},${trademark.publicationDate},${trademark.registrationNumber},${trademark.registrationDate}" /></td>
 <%-- 									<td><input type="checkbox" class="checkbox-member-id" value="${trademark}" /></td> --%>
 									<td>${trademark.indexNo}</td>
 									<td><img style="width:150px;" src="${trademark.bigDrawing}"/></td>
@@ -134,14 +128,21 @@ function selectAllTrademark(selectAll)  {
 
 <!-- <form method="POST" name="do-stored-trademark-form" action="../workSpace/storedTrademark" onsubmit="return false;"> -->
 <form method="POST" name="do-stored-trademark-form" action="../workSpace/storedTrademark" >
+<!-- <form id = "checkedTd" name="do-stored-trademark-form"  > -->
 
-	<input type="hidden" name="indexNo" value="" />
-	<input type="hidden" name="applicantName" value="" />
-	<input type="hidden" name="applicationDate" value="" />
+<!-- 	<input type="hidden" name="trademark" value="" /> -->
+	
+	<input type="hidden" name="test" value="" />
+<!-- 	<input type="hidden" name="indexNo" value="" /> -->
+<!-- 	<input type="hidden" name="applicantName" value="" /> -->
+<!-- 	<input type="hidden" name="applicationNumber" value="" /> -->
+<!-- 	<input type="hidden" name="applicationDate" value="" /> -->
+<!-- 	<input type="hidden" name="publicationNumber" value="" /> -->
+<!-- 	<input type="hidden" name="publicationDate" value="" /> -->
+<!-- 	<input type="hidden" name="registrationNumber" value="" /> -->
 </form>
 		
 <script>
-
 	$('.btn-stored-selected-trademark').click(function() {
 		const values = $('.checkbox-member-id:checked').map((index, el) => el.value).toArray();
 		if (values.length == 0) {
@@ -153,18 +154,72 @@ function selectAllTrademark(selectAll)  {
 		}
 // 		let valuesJsonStr = JSON.stringify(values);
 		console.log(values);
-		let valuesArr = values[0].split(',')
+// 		console.log('=============' + values.length);
+		
 // 		console.log(valuesArr);
-		$('input[name=indexNo]').val(valuesArr[0]);
-		$('input[name=applicantName]').val(valuesArr[1]);
-		$('input[name=applicationDate]').val(valuesArr[2]);
+
+// 		let valuesArr;
+// 		for(let i = 0; i < values.length; i++){
+// 			valuesArr = values[i].split(',');
+// 			console.log(valuesArr);
+// 			$('input[name=indexNo]').val(valuesArr.join(','));
+// 			$('input[name=applicantName]').val(valuesArr[1]);
+// 			$('input[name=applicationNumber]').val(valuesArr[2]);
+// 			$('input[name=applicationDate]').val(valuesArr[3]);
+// 		}
+		
+		let valuesArr = values.join('...');
+		console.log(valuesArr)
+		
+		$('input[name=test]').val(valuesArr);
+// 		console.log(valuesArr)
+		//
+		
+// 		let chkTrademark = function (indexNo, applicantName, applicationNumber, applicationDate) {
+//         this.indexNo = indexNo;
+//         this.applicantName = applicantName;
+//         this.applicationNumber = applicationNumber;
+//         this.applicationDate = applicationDate;
+//     }
+		
+// // 		let param = [];
+// 	    for(i=0; i<values.length; i++) {
+// 	        let trademark = new chkTrademark(
+// 	        	$('input[name=indexNo]').eq(i).val(),
+// 	            $("input[name='applicantName']").eq(i).val(),
+// 	            $("selected[name='applicationNumber']").eq(i).val(),
+// 	            $("input[name='applicationDate']").eq(i).val()
+// 	        )
+// 	        console.log(trademark);
+// // 	        param.push(trademark);
+// 	    }
+// 	    console.log(param);
+	    
+		
+// 		$('input[name=publicationNumber]').val(valuesArr[4]);
+// 		$('input[name=publicationDate]').val(valuesArr[5]);
+// 		$('input[name=registrationNumber]').val(valuesArr[6]);
+// 		$('input[name=registrationNumber]').val(valuesArr[6]);
+// 			console.log($('input[name=indexNo]').val(valuesArr[0]));
+// 			$('input[name=applicationDate]').val(valuesArr[2]);
 // 		$('input[name=trademark]').val(valuesJsonStr);
 // 		let selectTrademarks = $('input[name=ids]').val(values.join(','));
 // 		console.log($('input[name=trademark]').val());
 // 		alert(selectTrademarks);
-// 		$('form[name=do-stored-trademark-form]').submit();
-// 		console.log($('form[name=do-stored-trademark-form]'));
+		
+		$('form[name=do-stored-trademark-form]').submit();
 	})
+	
+// 	$.ajax({
+// 	  url  : "/usr/workSpace/storedTrademark",
+// 	  type : "POST",
+// 	  data : $("#checkedTd").serializeArray(),
+// 	  dataType: "json"
+// 	  success : function(){
+//     alert("성공?!");
+//   }
+	
+// });
 </script>
 
 

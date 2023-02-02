@@ -1,118 +1,140 @@
 package com.cji.exam.trademark.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cji.exam.trademark.service.StoredTrademarkService;
 import com.cji.exam.trademark.vo.Trademark;
 
 @Controller
 public class UserWorkSpaceController {
+	
+	private StoredTrademarkService storedTrademarkService;
+	
+	@Autowired
+	UserWorkSpaceController(StoredTrademarkService storedTrademarkService){
+		this.storedTrademarkService = storedTrademarkService;
+	}
+	
 	@RequestMapping("/usr/workSpace/myWorkSpace")
 	public String myWorkspace() {
 		return "usr/workSpace/myWorkSpace";
 	}
 	
-//	@RequestMapping("/usr/workSpace/storedTrademark")
-//	@ResponseBody
-//	public Trademark storedTrademark(Trademark trademark) {
-//		
-//		System.out.println(trademark);
-//		return trademark;
-//	}
-	
-//	@RequestMapping("/usr/workSpace/storedTrademark")
-//	@ResponseBody
-//	public List<String> storedTrademark(@RequestParam(defaultValue = "") List<String> tradeMark) {
-//		
-//		/*
-//		 * for(String a : tradeMark.split(",")) { System.out.println(a); }
-//		 */
-//		
-//		return tradeMark;
-//	}
-	/*
+
 	@RequestMapping("/usr/workSpace/storedTrademark")
 	@ResponseBody
-	public Trademark storedTrademark(Trademark trademark) {
-		
-//		for(String a : trademark.split(",")) {
-//			System.out.println(a);
-//		}
-		String [] indexNo = trademark.getIndexNo().split(",");
-		String [] applicantName = trademark.getApplicantName().split(",");
-		System.out.println(trademark.getApplicantName());
-		
-		String [] applicationNumber = trademark.getApplicationNumber().split(",");
-		String [] applicationDate = trademark.getApplicationDate().split(",");
-//		String [] indexNo = trademark.getIndexNo().split(",");
-//		String [] indexNo = trademark.getIndexNo().split(",");
-//		String [] indexNo = trademark.getIndexNo().split(",");
-		
-		List<Trademark> trademarks = new ArrayList<>();
-		trademarks.add(trademark);
-		for(int i = 0; i < indexNo.length ;i++) {
-			Trademark td = new Trademark();
-			td.setIndexNo(indexNo[i]);
-			
-			if(i>=applicantName.length) {
-				td.setApplicantName(null);
-			}else {
-				td.setApplicantName(applicantName[i]);
-				System.out.println(applicantName[i]);
-			}
-			if(i>=applicationNumber.length) {
-				td.setApplicationNumber(null);
-			}else {
-				td.setApplicationNumber(applicantName[i]);
-			}
-			if(i>=applicationDate.length) {
-				td.setApplicationDate(null);
-			}else {
-				td.setApplicationDate(applicantName[i]);
-			}
-			trademarks.add(trademark);
-		}
-		
-		
-		System.out.println("=============" + trademarks);
-		
-//		System.out.println(trademark.getApplicantName());
-		
-//		System.out.println(applicationNumber);
-		
-		return trademark;
-	}*/
-	
-	@RequestMapping("/usr/workSpace/storedTrademark")
-	@ResponseBody
-	public Trademark storedTrademark(String test) {
+	public List<Trademark> storedTrademark(String test) {
 		
 		System.out.println(test);
 		
-		String[] testArr = test.split("...");
+		String[] testArr = test.split("!");
+		
 		
 		System.out.println("test1 : " + testArr[0]);
 		System.out.println("test2 : " + testArr[1]);
 		
-//		for(int i = 0; i < testArr.length; i++) {
-//			System.out.println(testArr[i]);
-//		}
 		
-//		String[] testArr2 = testArr[0].split(",");
-//		
-//		for(int i = 0; i < testArr2.length; i++) {
-//			System.out.println(testArr2[i]);
-//		}
+		//리스트맵  -> 메소드
 		
-//		for() {
-//			
-//		}
+		List<Map<String, String>> listMap =  SetListMap(testArr);
 		
+		
+		
+		System.out.println("List Map Insert : " + listMap.toString());
+		System.out.println("");
+		
+		/*
+		List<Trademark> list = new ArrayList<>();
+		for(int i = 0; i < testArr.length; i++) {
+			
+			
+			
+			System.out.println(testArr[i]);
+			String[] testArr2 = testArr[i].split(",",-1);
+			Trademark trademark = new Trademark();
+			
+			trademark.setIndexNo(testArr2[0]);
+			trademark.setApplicantName(testArr2[1]);
+			trademark.setApplicationNumber(testArr2[2]);
+			trademark.setApplicationDate(testArr2[3]);
+			trademark.setPublicationNumber(testArr2[4]);
+			trademark.setPublicationDate(testArr2[5]);
+			trademark.setRegistrationNumber(testArr2[6]);
+			trademark.setRegistrationDate(testArr2[7]);
+			trademark.setRegistrationPublicNumber(testArr2[8]);
+			trademark.setRegistrationPublicDate(testArr2[9]);
+			trademark.setPriorityNumber(testArr2[10]);
+			trademark.setPriorityDate(testArr2[11]);
+			trademark.setInternationalRegisterNumber(testArr2[12]);
+			trademark.setInternationalRegisterDate(testArr2[13]);
+			trademark.setApplicationStatus(testArr2[14]);
+			trademark.setClassificationCode(testArr2[15]);
+			trademark.setViennaCode(testArr2[16]);
+			trademark.setAgentName(testArr2[17]);
+			trademark.setRegPrivilegeName(testArr2[18]);
+			trademark.setFullText(testArr2[19]);
+			trademark.setDrawing(testArr2[20]);
+			trademark.setBigDrawing(testArr2[21]);
+			
+//			list.add(trademark);
+//			for(int j = 0; j < testArr2.length; j++) {
+//				System.out.println(testArr2[j]);
+//				
+//				
+////				list.add(testArr2[j]);
+//				
+//			}
+		}
+		
+		
+		System.out.println("list : " + list);
+		storedTrademarkService.storedTrademark(list);
+		*/
 		return null;
 	}
-	
+
+	private List<Map<String, String>> SetListMap(String[] testArr) {
+		List<Map<String, String>> ListMap = new ArrayList<>();
+		
+		for(int i = 0; i < testArr.length; i++) {
+			String[] testArr2 = testArr[i].split(",",-1);
+			Map<String, String> map = new HashMap<>();
+			map.put("indexNo", testArr2[0]);
+			map.put("applicantName", testArr2[1]);
+			map.put("applicationNumber", testArr2[2]);
+			map.put("applicationDate", testArr2[3]);
+			map.put("publicationNumber", testArr2[4]);
+			map.put("publicationDate", testArr2[5]);
+			map.put("registrationNumber", testArr2[6]);
+			map.put("registrationDate", testArr2[7]);
+			map.put("registrationPublicNumber", testArr2[8]);
+			map.put("registrationPublicDate", testArr2[9]);
+			map.put("priorityNumber", testArr2[10]);
+			map.put("priorityDate", testArr2[11]);
+			map.put("internationalRegisterNumber,", testArr2[12]);
+			map.put("internationalRegisterDate", testArr2[13]);
+			map.put("applicationStatus", testArr2[14]);
+			map.put("classificationCode", testArr2[15]);
+			map.put("viennaCode", testArr2[16]);
+			map.put("agentName", testArr2[17]);
+			map.put("regPrivilegeName", testArr2[18]);
+			map.put("fullText", testArr2[19]);
+			map.put("drawing", testArr2[20]);
+			map.put("bigDrawing", testArr2[21]);
+			
+			ListMap.add(map);
+			for (String mapKey : map.keySet()) {
+				System.out.println("key : " + mapKey + " / " + "value : " + map.get(mapKey));
+			}
+		}
+		return ListMap;
+	}
 }

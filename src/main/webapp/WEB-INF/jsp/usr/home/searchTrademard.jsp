@@ -99,7 +99,8 @@ function selectAllTrademark(selectAll)  {
 <%-- 								<input type="hidden" name="${trademark.indexNo}" value="${trademark}"/> --%>
 								
 								<tr class="hover">
-									<td><input type="checkbox" class="checkbox-member-id" value="${trademark.indexNo},${trademark.applicantName},${trademark.applicationNumber},${trademark.applicationDate},${trademark.publicationNumber},${trademark.publicationDate},${trademark.registrationNumber},${trademark.registrationDate}" /></td>
+									<td><input type="checkbox" class="checkbox-member-id" value="${trademark.indexNo},${trademark.applicantName},${trademark.applicationNumber},${trademark.applicationDate},${trademark.publicationNumber},${trademark.publicationDate},${trademark.registrationNumber},${trademark.registrationDate},${trademark.registrationPublicNumber},${trademark.registrationPublicDate},${trademark.priorityNumber},${trademark.priorityDate},${trademark.internationalRegisterNumber},${trademark.internationalRegisterDate},${trademark.applicationStatus},${trademark.classificationCode},${trademark.viennaCode},${trademark.agentName},${trademark.regPrivilegeName},${trademark.fullText},${trademark.drawing},${trademark.bigDrawing}" /></td>
+<%-- 									<td><input type="checkbox" class="checkbox-member-id" value="${trademark.indexNo},${trademark.applicantName},${trademark.applicationNumber},${trademark.applicationDate},${trademark.publicationNumber},${trademark.publicationDate},${trademark.registrationNumber},${trademark.registrationDate}" /></td> --%>
 <%-- 									<td><input type="checkbox" class="checkbox-member-id" value="${trademark}" /></td> --%>
 									<td>${trademark.indexNo}</td>
 									<td><img style="width:150px;" src="${trademark.bigDrawing}"/></td>
@@ -152,12 +153,12 @@ function selectAllTrademark(selectAll)  {
 		if (confirm('선택한 상표를 저장하시겠습니까?') == false) {
 			return;
 		}
+		
 // 		let valuesJsonStr = JSON.stringify(values);
 		console.log(values);
 // 		console.log('=============' + values.length);
 		
 // 		console.log(valuesArr);
-
 // 		let valuesArr;
 // 		for(let i = 0; i < values.length; i++){
 // 			valuesArr = values[i].split(',');
@@ -168,7 +169,7 @@ function selectAllTrademark(selectAll)  {
 // 			$('input[name=applicationDate]').val(valuesArr[3]);
 // 		}
 		
-		let valuesArr = values.join('...');
+		let valuesArr = values.join('!');
 		console.log(valuesArr)
 		
 		$('input[name=test]').val(valuesArr);

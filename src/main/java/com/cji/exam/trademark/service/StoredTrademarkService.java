@@ -1,7 +1,5 @@
 package com.cji.exam.trademark.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +18,10 @@ public class StoredTrademarkService {
 		this.storedTrademarkRepository = storedTrademarkRepository;
 	}
 	
-	public void storedTrademark(List<Trademark> list) {
+	public void storedTrademark(Trademark td) {
 //		Trademark trademark = new Trademark();
 		System.out.println("service ?????");
-		
-		
-//		storedTrademarkRepository.storedTrademark(list);
+		storedTrademarkRepository.storedTrademark(td);
 		
 	}
 

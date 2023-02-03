@@ -4,14 +4,32 @@
 
 <mapper namespace="com.cji.exam.trademark.repository.StoredTrademarkRepository">
 	
-	<insert id="storedTrademark">
+	<insert id="storedTrademark" >
 			INSERT INTO trademark
 				SET regDate = NOW(),
 					updateDate = NOW(),
-					indexNo, = #{indexNo},
+					indexNo = #{indexNo},
 					applicantName = #{applicantName},
 					applicationNumber = #{applicationNumber},
 					applicationDate = #{applicationDate},
+					publicationNumber = #{publicationNumber},
+					publicationDate = #{publicationDate},
+					registrationNumber = #{registrationNumber},
+					registrationDate = #{registrationDate},
+					registrationPublicNumber = #{registrationPublicNumber},
+					registrationPublicDate = #{registrationPublicDate},
+					priorityNumber = #{priorityNumber},
+					priorityDate = #{priorityDate},
+					internationalRegisterNumber = #{internationalRegisterNumber},
+					internationalRegisterDate = #{internationalRegisterDate},
+					applicationStatus = #{applicationStatus},
+					classificationCode = #{classificationCode},
+					viennaCode = #{viennaCode},
+					agentName = #{agentName},
+					regPrivilegeName = #{regPrivilegeName},
+					`fullText` = #{fullText},
+					drawing = #{drawing},
+					bigDrawing = #{bigDrawing}
 	</insert>
 
 </mapper>

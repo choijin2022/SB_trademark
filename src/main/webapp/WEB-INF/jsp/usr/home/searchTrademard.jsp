@@ -87,6 +87,7 @@ function selectAllTrademark(selectAll)  {
 						<th class="text-sm">이미지</th>
 						<th class="text-sm">출원번호</th>
 						<th class="text-sm">출원일자</th>
+						<th class="text-sm">상품분류</th>
 						<th class="text-sm">법적상태</th>
 						<th class="text-sm">출원인 이름</th>
 					</tr>
@@ -106,6 +107,7 @@ function selectAllTrademark(selectAll)  {
 									<td><img style="width:150px;" src="${trademark.bigDrawing}"/></td>
 									<td>${trademark.applicationNumber}</td>
 									<td>${trademark.applicationDate}</td>
+									<td>${trademark.classificationCode}</td>
 									<td>${trademark.applicationStatus}</td>
 									<td>${trademark.applicantName}</td>
 								</tr>

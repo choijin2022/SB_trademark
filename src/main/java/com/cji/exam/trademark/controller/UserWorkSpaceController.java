@@ -31,17 +31,16 @@ public class UserWorkSpaceController {
 
 	@RequestMapping("/usr/workSpace/storedTrademark")
 	@ResponseBody
-	public List<Trademark> storedTrademark(String test) {
+	public int storedTrademark(String test) {
 		
-		System.out.println(test);
+//		System.out.println(test);
 		
 		String[] testArr = test.split("!");
 		
+//		System.out.println("test1 : " + testArr[0]);
+//		System.out.println("test2 : " + testArr[1]);
 		
-		System.out.println("test1 : " + testArr[0]);
-		System.out.println("test2 : " + testArr[1]);
-		
-		
+		/*
 		//리스트맵  -> 메소드
 		
 		List<Map<String, String>> listMap =  SetListMap(testArr);
@@ -51,16 +50,15 @@ public class UserWorkSpaceController {
 		System.out.println("List Map Insert : " + listMap.toString());
 		System.out.println("");
 		
-		/*
-		List<Trademark> list = new ArrayList<>();
+		*/
+		//List<Trademark> list = new ArrayList<>();
+		
+		int totalSelectedTrademark = testArr.length;
+		
 		for(int i = 0; i < testArr.length; i++) {
-			
-			
-			
 			System.out.println(testArr[i]);
 			String[] testArr2 = testArr[i].split(",",-1);
 			Trademark trademark = new Trademark();
-			
 			trademark.setIndexNo(testArr2[0]);
 			trademark.setApplicantName(testArr2[1]);
 			trademark.setApplicationNumber(testArr2[2]);
@@ -84,6 +82,8 @@ public class UserWorkSpaceController {
 			trademark.setDrawing(testArr2[20]);
 			trademark.setBigDrawing(testArr2[21]);
 			
+			storedTrademarkService.storedTrademark(trademark);
+			System.out.println(trademark);
 //			list.add(trademark);
 //			for(int j = 0; j < testArr2.length; j++) {
 //				System.out.println(testArr2[j]);
@@ -94,11 +94,11 @@ public class UserWorkSpaceController {
 //			}
 		}
 		
-		
+		/*
 		System.out.println("list : " + list);
 		storedTrademarkService.storedTrademark(list);
 		*/
-		return null;
+		return totalSelectedTrademark;
 	}
 
 	private List<Map<String, String>> SetListMap(String[] testArr) {

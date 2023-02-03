@@ -41,8 +41,8 @@ public class UserApiController {
 		try {
 			String url = "http://kipo-api.kipi.or.kr/openapi/service/trademarkInfoSearchService/getWordSearch";
 //			String serviceKey = "eCIuH7bLNd1BmdIIqpFa2FTMadwqxJ539ME6QtSZmTYlwAsadP88mzc4vBo%2BnxSaE32b6SeLZ7wKfLxE42jSxQ%3D%3D";
-//			String serviceKey = "WTh4nA6jgRy5Jxmw4vhBoRbWDJFex7P%2BNr1NnXssp1P6N6NDjsY5hEZnOLCS4NEOpS8SSkrREQp%2FqX%2BsrB42DQ%3D%3D";
-			String serviceKey = "sd2%2Fw1FPMP7dCiLT1r8GNJatfwBCKhZfFVQAA3lNV55hr4o2tNP9B0NpNBn7iAGvAN8QwKTBfli73H%2Fdq7xZBw%3D%3D";
+			String serviceKey = "WTh4nA6jgRy5Jxmw4vhBoRbWDJFex7P%2BNr1NnXssp1P6N6NDjsY5hEZnOLCS4NEOpS8SSkrREQp%2FqX%2BsrB42DQ%3D%3D";
+//			String serviceKey = "sd2%2Fw1FPMP7dCiLT1r8GNJatfwBCKhZfFVQAA3lNV55hr4o2tNP9B0NpNBn7iAGvAN8QwKTBfli73H%2Fdq7xZBw%3D%3D";
 			//
 //			String searchKeywork = searchString;
 			
@@ -72,13 +72,22 @@ public class UserApiController {
 					// Trademark 객체 생성 후 저장
 					Trademark trademark = new Trademark();
 					
+					if(getTagValue("applicationNumber", eElement) == null || getTagValue("applicationNumber", eElement) == "") {
+						trademark.setApplicationNumber(getTagValue("internationalRegisterNumber", eElement));
+					}else {
+						trademark.setApplicationNumber(getTagValue("applicationNumber", eElement));
+					}
+					if(getTagValue("applicationDate", eElement) == null || getTagValue("applicationDate", eElement) == "") {
+						trademark.setApplicationNumber(getTagValue("internationalRegisterDate", eElement));
+					}else {
+						trademark.setApplicationNumber(getTagValue("applicationDate", eElement));
+					}
+					
 					trademark.setSearchString(searchString);
 					trademark.setTotalCount(totalCount);
 					
 					trademark.setIndexNo(getTagValue("indexNo", eElement));
 					trademark.setApplicantName(getTagValue("applicantName", eElement));
-					trademark.setApplicationNumber(getTagValue("applicationNumber", eElement));
-					trademark.setApplicationDate(getTagValue("applicationDate", eElement));
 					trademark.setPublicationNumber(getTagValue("publicationNumber", eElement));
 					trademark.setPublicationDate(getTagValue("publicationDate", eElement));
 					trademark.setRegistrationNumber(getTagValue("registrationNumber", eElement));
@@ -107,9 +116,35 @@ public class UserApiController {
 					trademark.setItemsInAPage(numOfRows);
 					trademark.setPagesCount(pagesCount);
 					
-					System.out.println(trademark);
+					System.out.println("출원번호" + trademark.getApplicationNumber());
 					
-					
+					// 콤마제거
+					if(trademark.getApplicantName() != null) {
+						String applicantName = trademark.getApplicantName();
+						if(applicantName.contains(",")) {
+							String str = removeComma(applicantName);
+							trademark.setApplicantName(str);
+						}
+					}
+					if(trademark.getRegPrivilegeName() != null) {
+						String regPrivilegeName= trademark.getRegPrivilegeName();
+						if(regPrivilegeName.contains(",")){
+							String str = removeComma(regPrivilegeName);
+							trademark.setRegPrivilegeName(str);
+						}
+					}
+					if(trademark.getAgentName() != null) {
+						String agentName= trademark.getAgentName();
+						if(agentName.contains(",")) {
+							String str = removeComma(agentName);
+							trademark.setAgentName(str);
+						}
+					}
+
+					System.out.println("출원인 이름 : " + trademark.getApplicantName());
+					System.out.println("권리자 이름 : " + trademark.getRegPrivilegeName() );
+//					System.out.println(trademark);
+					// 리스트에 trademark 넣기
 					trademarks.add(trademark);
 					
 //					model.addAttribute("trademark", trademark);
@@ -128,7 +163,14 @@ public class UserApiController {
 		
 		return "usr/home/searchTrademard";
 	}
-	
+	//콤마 지우기
+	private String removeComma(String str) {
+		str = str.replace(",", "");
+		return str;
+
+	 
+	}
+
 	private int setPage(int page, int totalCnt, int numOfRows) {
 		int pagesCount = (int) Math.ceil((double) totalCnt / numOfRows);
 		return pagesCount;
@@ -167,4 +209,10 @@ public class UserApiController {
 		
 		return trademarks;
 	}
+	
+//	private static void removeComma(Trademark td){
+//		
+//	
+//		
+//	}
 }

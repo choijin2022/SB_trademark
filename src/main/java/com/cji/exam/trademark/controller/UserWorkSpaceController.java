@@ -1,10 +1,5 @@
 package com.cji.exam.trademark.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,11 +27,8 @@ public class UserWorkSpaceController {
 	@RequestMapping("/usr/workSpace/storedTrademark")
 	@ResponseBody
 	public int storedTrademark(String test) {
-		
 //		System.out.println(test);
-		
 		String[] testArr = test.split("!");
-		
 //		System.out.println("test1 : " + testArr[0]);
 //		System.out.println("test2 : " + testArr[1]);
 		
@@ -44,8 +36,6 @@ public class UserWorkSpaceController {
 		//리스트맵  -> 메소드
 		
 		List<Map<String, String>> listMap =  SetListMap(testArr);
-		
-		
 		
 		System.out.println("List Map Insert : " + listMap.toString());
 		System.out.println("");
@@ -58,29 +48,33 @@ public class UserWorkSpaceController {
 		for(int i = 0; i < testArr.length; i++) {
 			System.out.println(testArr[i]);
 			String[] testArr2 = testArr[i].split(",",-1);
+			
 			Trademark trademark = new Trademark();
 			trademark.setIndexNo(testArr2[0]);
-			trademark.setApplicantName(testArr2[1]);
-			trademark.setApplicationNumber(testArr2[2]);
-			trademark.setApplicationDate(testArr2[3]);
-			trademark.setPublicationNumber(testArr2[4]);
-			trademark.setPublicationDate(testArr2[5]);
-			trademark.setRegistrationNumber(testArr2[6]);
-			trademark.setRegistrationDate(testArr2[7]);
-			trademark.setRegistrationPublicNumber(testArr2[8]);
-			trademark.setRegistrationPublicDate(testArr2[9]);
-			trademark.setPriorityNumber(testArr2[10]);
-			trademark.setPriorityDate(testArr2[11]);
-			trademark.setInternationalRegisterNumber(testArr2[12]);
-			trademark.setInternationalRegisterDate(testArr2[13]);
-			trademark.setApplicationStatus(testArr2[14]);
-			trademark.setClassificationCode(testArr2[15]);
-			trademark.setViennaCode(testArr2[16]);
-			trademark.setAgentName(testArr2[17]);
-			trademark.setRegPrivilegeName(testArr2[18]);
-			trademark.setFullText(testArr2[19]);
-			trademark.setDrawing(testArr2[20]);
-			trademark.setBigDrawing(testArr2[21]);
+			trademark.setTitle(testArr2[1]);
+			trademark.setApplicantName(testArr2[2]);
+			trademark.setApplicationNumber(testArr2[3]);
+			trademark.setApplicationDate(testArr2[4]);
+			trademark.setPublicationNumber(testArr2[5]);
+			trademark.setPublicationDate(testArr2[6]);
+			trademark.setRegistrationNumber(testArr2[7]);
+			trademark.setRegistrationDate(testArr2[8]);
+			trademark.setRegistrationPublicNumber(testArr2[9]);
+			trademark.setRegistrationPublicDate(testArr2[10]);
+			trademark.setPriorityNumber(testArr2[11]);
+			trademark.setPriorityDate(testArr2[12]);
+			trademark.setInternationalRegisterNumber(testArr2[13]);
+			trademark.setInternationalRegisterDate(testArr2[14]);
+			trademark.setApplicationStatus(testArr2[15]);
+			trademark.setClassificationCode(testArr2[16]);
+			trademark.setViennaCode(testArr2[17]);
+			trademark.setAgentName(testArr2[18]);
+			trademark.setRegPrivilegeName(testArr2[19]);
+			trademark.setFullText(testArr2[20]);
+			trademark.setDrawing(testArr2[21]);
+			trademark.setBigDrawing(testArr2[22]);
+//			int rowNum = Integer.parseInt(testArr2[23]);
+//			trademark.setNumOfRows(rowNum);
 			
 			storedTrademarkService.storedTrademark(trademark);
 			System.out.println(trademark);
@@ -100,7 +94,7 @@ public class UserWorkSpaceController {
 		*/
 		return totalSelectedTrademark;
 	}
-
+/*
 	private List<Map<String, String>> SetListMap(String[] testArr) {
 		List<Map<String, String>> ListMap = new ArrayList<>();
 		
@@ -137,4 +131,5 @@ public class UserWorkSpaceController {
 		}
 		return ListMap;
 	}
+	*/
 }

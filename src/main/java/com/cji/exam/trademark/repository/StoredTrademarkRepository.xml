@@ -9,6 +9,7 @@
 				SET regDate = NOW(),
 					updateDate = NOW(),
 					indexNo = #{indexNo},
+					title = #{title},
 					applicantName = #{applicantName},
 					applicationNumber = #{applicationNumber},
 					applicationDate = #{applicationDate},

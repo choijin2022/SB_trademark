@@ -17,87 +17,9 @@ const submitForm = function(form) {
 	let numOfRows = form.numOfRows.value.trim();
 	let searchString = form.searchString.value.trim();
 // 		let searchRecentYear = form.searchRecentYear.value.trim();
-	let title = form.title.value.trim();
+	//let title = form.title.value.trim();
 	
-// 	$.get('../home/searchTrademard', {
-// 		numOfRows : numOfRows,
-// 		searchString: searchString,
-// 		title: title,
-// 		ajaxMode : 'Y'
-// 	}, function(data){
-		
-// 		console.log(data);
-		
-// 		total = data[0].totalCount;
-// 		$(".hitCount").html(total + '개');
-		
-// 		let addStoreButtonHtml = `<button class="btn btn-outline btn-accent container justify-center mt-5">저장</button>`;
-//     	$(".storeButton").html(addStoreButtonHtml);
-    	
-// <!-- 	        	// 리스트 부분 비우기 -->
-//     	$("#product").empty();
-    	
-// <!-- 	        	// 리스트 생성 -->
-		
-// 		let num = 0;
-//     	$(data).each(function() {
-    		
-//     		console.log(data[num]);
-// 			let index = data[num].indexNo;
-// 			console.log(index);
 
-// //     			<form action="../home/stored" method="POST" onsubmit="storedTradeMark__submitForm(this); return false;">
-//     		const html = `
-// 	    			<tr class="hover">
-// 	    				<td>
-// 	    					<input type="checkbox" name="test">
-// 	    				</td>
-// 						<td >\${index}</td>
-// 						<td ><img style="width:150px;" src="\${data[num].bigDrawing}"/></td>
-// 						<td >\${data[num].applicationNumber}</td>
-// 						<td >\${data[num].applicationDate}</td>
-// 						<td >\${data[num].applicationStatus}</td>
-// 						<td >\${data[num].applicantName}</td>
-// 					</tr>
-//     		`
-// // 				</form>
-
-//     		$("#product").append(html);
-    		
-//     		num++;
-//     	})
-		
-//     	//페이지
-//     	$(".page-menu").empty();
-    	
-//     	let pageHtml = `
-    	
-//    		<div class="btn-group">
-//    			<c:set var="pageMenuLen" value="5" />
-//    			<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1}" />
-// 			<c:set var="endPage" value="${page + pageMenuLen <= pagesCount ? page + pageMenuLen : pagesCount}" />
-		
-			
-// 		</div>
-		
-// 		`
-//     	$(".page-menu").append(pageHtml);
-//     	console.log(pageMenuLen);	
-// 		console.log(startPage);	
-		
-//     	//페이지 수정 끝
-    	
-//     	let arr = new Array();
-
-// 		$('input:checkbox[name=test]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
-// 		    let a = $(this).closest('form').get(0);
-// 			a.no.value = 1;
-// 			console.log(a.no.value);
-// 		});
-		
-// 	}, 'json');
-	
-// 	return false;
 	form.submit();
 }
 
@@ -157,10 +79,10 @@ const submitForm = function(form) {
 <!-- 							<th>년도</th> -->
 <!-- 							<td><input maxlength="4" class="input input-ghost w-full text-lg border-gray-400" type="text" name="searchRecentYear" placeholder="년도" /></td> -->
 <!-- 						</tr> -->
-						<tr>
-							<th>제목</th>
-							<td><input maxlength="800" class="input input-ghost w-full text-lg border-gray-400" type="text" name="title" placeholder="제목" value="${title}" /></td>
-						</tr>
+<!-- 						<tr> -->
+<!-- 							<th>제목</th> -->
+<%-- 							<td><input maxlength="800" class="input input-ghost w-full text-lg border-gray-400" type="text" name="title" placeholder="제목" value="${title}" /></td> --%>
+<!-- 						</tr> -->
 						<tr>
 							<td colspan="2"><button class="btn btn-outline btn-accent w-full do-search-form">검색</button></td>
 						</tr>
@@ -178,12 +100,6 @@ const submitForm = function(form) {
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
 		<form >
-			<input type="hidden" name="no"/>
-			<input type="hidden" name="img"/>
-			<input type="hidden" name="an"/>
-			<input type="hidden" name="ad"/>
-			<input type="hidden" name="as"/>
-			<input type="hidden" name="aname"/>
 			<table class="table table-zebra w-full">
 				<thead>
 					<tr>
@@ -192,6 +108,7 @@ const submitForm = function(form) {
 						<th class="text-sm">이미지</th>
 						<th class="text-sm">출원번호</th>
 						<th class="text-sm">출원일자</th>
+						<th class="text-sm">상품분류</th>
 						<th class="text-sm">법적상태</th>
 						<th class="text-sm">출원인 이름</th>
 					</tr>

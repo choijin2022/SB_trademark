@@ -8,7 +8,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.w3c.dom.Document;
@@ -20,27 +22,20 @@ import com.cji.exam.trademark.vo.Trademark;
 
 @Controller
 public class UserApiController {
+//	private static final int numOfRows = 50;
+			
 	@RequestMapping("/usr/home/trademarkApi2")
 	public String trademarkApi2() {
 		return "usr/home/trademarkApi2";
 	}
 	
-//	@RequestMapping("/usr/home/test.do")
-//	@ResponseBody
-//	public String test(String test) {
-//		
-//		System.out.println(test);
-//		
-//		return test;
-//	}
 	@RequestMapping("/usr/home/searchTrademard")
-	public String doSearchTrademard(Model model, @RequestParam(defaultValue = "1") int page,int numOfRows, String searchString, String title) {
+	public String doSearchTrademard(Model model, int numOfRows, @RequestParam(defaultValue = "1") String searchString, @RequestParam(defaultValue = "1") int pageNo) {
 		List<Trademark> trademarks = new ArrayList<>();
 		String totalCount;
 		
 		try {
 			String url = "http://kipo-api.kipi.or.kr/openapi/service/trademarkInfoSearchService/getWordSearch";
-//			String serviceKey = "eCIuH7bLNd1BmdIIqpFa2FTMadwqxJ539ME6QtSZmTYlwAsadP88mzc4vBo%2BnxSaE32b6SeLZ7wKfLxE42jSxQ%3D%3D";
 			String serviceKey = "WTh4nA6jgRy5Jxmw4vhBoRbWDJFex7P%2BNr1NnXssp1P6N6NDjsY5hEZnOLCS4NEOpS8SSkrREQp%2FqX%2BsrB42DQ%3D%3D";
 //			String serviceKey = "sd2%2Fw1FPMP7dCiLT1r8GNJatfwBCKhZfFVQAA3lNV55hr4o2tNP9B0NpNBn7iAGvAN8QwKTBfli73H%2Fdq7xZBw%3D%3D";
 			//
@@ -48,7 +43,7 @@ public class UserApiController {
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document documentInfo = dBuilder.parse(url + "?ServiceKey=" + serviceKey + "&numOfRows=" + numOfRows +"&searchString=" + searchString);
+			Document documentInfo = dBuilder.parse(url + "?ServiceKey=" + serviceKey + "&numOfRows=" + numOfRows +"&searchString=" + searchString );
 			
 			documentInfo.getDocumentElement().normalize();
 			System.out.println("root tag : " + documentInfo.getDocumentElement().getNodeName());
@@ -56,8 +51,11 @@ public class UserApiController {
 			
 			
 			NodeList nCoutnNode = documentInfo.getElementsByTagName("count");
-			totalCount = getTotalCount(nCoutnNode);
+			totalCount = getCountItem(nCoutnNode,"totalCount");
+			int setPageNo = Integer.parseInt(getCountItem(nCoutnNode,"pageNo"));
 			System.out.println("totalCount : "+totalCount);
+			System.out.println("setPageNo : "+setPageNo);
+			System.out.println("pageNo : " + pageNo);
 			
 			// 수정 끝
 			NodeList nList = documentInfo.getElementsByTagName("item");
@@ -71,21 +69,23 @@ public class UserApiController {
 					System.out.println(getTagValue("indexNo", eElement));
 					// Trademark 객체 생성 후 저장
 					Trademark trademark = new Trademark();
-					
+					if(getTagValue("title", eElement) == null || getTagValue("title", eElement) == "") {
+						trademark.setTitle("(없음)");
+					}else {
+						trademark.setTitle(getTagValue("title", eElement));
+					}
 					if(getTagValue("applicationNumber", eElement) == null || getTagValue("applicationNumber", eElement) == "") {
 						trademark.setApplicationNumber(getTagValue("internationalRegisterNumber", eElement));
 					}else {
 						trademark.setApplicationNumber(getTagValue("applicationNumber", eElement));
 					}
 					if(getTagValue("applicationDate", eElement) == null || getTagValue("applicationDate", eElement) == "") {
-						trademark.setApplicationNumber(getTagValue("internationalRegisterDate", eElement));
+						trademark.setApplicationDate(getTagValue("internationalRegisterDate", eElement));
 					}else {
-						trademark.setApplicationNumber(getTagValue("applicationDate", eElement));
+						trademark.setApplicationDate(getTagValue("applicationDate", eElement));
 					}
-					
 					trademark.setSearchString(searchString);
 					trademark.setTotalCount(totalCount);
-					
 					trademark.setIndexNo(getTagValue("indexNo", eElement));
 					trademark.setApplicantName(getTagValue("applicantName", eElement));
 					trademark.setPublicationNumber(getTagValue("publicationNumber", eElement));
@@ -106,19 +106,25 @@ public class UserApiController {
 					trademark.setFullText(getTagValue("fullText", eElement));
 					trademark.setDrawing(getTagValue("drawing", eElement));
 					trademark.setBigDrawing(getTagValue("bigDrawing", eElement));
-					
+					trademark.setPageNo(pageNo);
 					// 페이지 정보
 					int totalCnt = Integer.parseInt(totalCount);
-					int pagesCount = setPage(page, totalCnt, numOfRows);
+					int pagesCount = setPage(pageNo, totalCnt, numOfRows);
 					
-					trademark.setPage(page);
 					trademark.setItemsTotalCount(totalCnt);
-					trademark.setItemsInAPage(numOfRows);
 					trademark.setPagesCount(pagesCount);
-					
+					trademark.setNumOfRows(numOfRows);
 					System.out.println("출원번호" + trademark.getApplicationNumber());
 					
 					// 콤마제거
+					if(trademark.getTitle() != null) {
+						String title = trademark.getTitle();
+						if(title.contains(",")) {
+							String str = title.replace(",", "_(콤마)");
+							trademark.setTitle(str);
+						}
+					}
+					
 					if(trademark.getApplicantName() != null) {
 						String applicantName = trademark.getApplicantName();
 						if(applicantName.contains(",")) {
@@ -143,7 +149,9 @@ public class UserApiController {
 
 					System.out.println("출원인 이름 : " + trademark.getApplicantName());
 					System.out.println("권리자 이름 : " + trademark.getRegPrivilegeName() );
-//					System.out.println(trademark);
+					System.out.println("상표명 : "+ trademark.getTitle() );
+					System.out.println("페이지번호 : "+ trademark.getPageNo() );
+					System.out.println(trademark);
 					// 리스트에 trademark 넣기
 					trademarks.add(trademark);
 					
@@ -154,6 +162,7 @@ public class UserApiController {
 				}
 			}
 			// ??
+//			model.addAttribute("numOfRows", numOfRows);
 			model.addAttribute("trademarks", trademarks);
 			System.out.println(trademarks);
 			
@@ -163,6 +172,14 @@ public class UserApiController {
 		
 		return "usr/home/searchTrademard";
 	}
+	
+	@ResponseBody
+    @RequestMapping(value = "getformjsonlist.do", method=RequestMethod.POST)
+    public Trademark getSearchFormJsonList(@RequestBody Trademark td) throws Exception{
+        System.out.println("???????????");
+        return td;
+    }
+
 	//콤마 지우기
 	private String removeComma(String str) {
 		str = str.replace(",", "");
@@ -176,14 +193,14 @@ public class UserApiController {
 		return pagesCount;
 	}
 
-	private String getTotalCount(NodeList nCoutnNode) {
+	private String getCountItem(NodeList nCoutnNode, String itemName) {
 		String totalCount="";
 		for(int temp = 0; temp < nCoutnNode.getLength(); temp++) {
 			Node nCntNode = nCoutnNode.item(temp);
 			if(nCntNode.getNodeType() == Node.ELEMENT_NODE) {
 				Element eElement = (Element) nCntNode;
 				
-				totalCount = getTagValue("totalCount", eElement);
+				totalCount = getTagValue(itemName, eElement);
 				
 			}
 			

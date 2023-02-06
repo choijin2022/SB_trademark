@@ -11,7 +11,6 @@ public class Trademark {
 	private int id;
 	private String regDate;
 	private String updateDate;
-	private String title;
 	private String totalCount;
 	private String searchString;
 	
@@ -20,9 +19,11 @@ public class Trademark {
 	private int itemsTotalCount;
 	private int itemsInAPage;
 	private int pagesCount;
-	
+	private int pageNo;
+	private int numOfRows;
 	
 	private String indexNo;
+	private String title;
 	private String applicantName;
 	private String applicationNumber;
 //	private String appReferenceNumber;
@@ -43,10 +44,10 @@ public class Trademark {
 	private String viennaCode;
 	private String agentName;
 	private String regPrivilegeName;
-//	private String title;
 	private String fullText;
 	private String drawing;
 	private String bigDrawing;
+	
 	
 	// 상태
 //	private boolean addStatus;

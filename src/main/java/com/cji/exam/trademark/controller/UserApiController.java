@@ -43,7 +43,7 @@ public class UserApiController {
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document documentInfo = dBuilder.parse(url + "?ServiceKey=" + serviceKey + "&numOfRows=" + numOfRows +"&searchString=" + searchString );
+			Document documentInfo = dBuilder.parse(url + "?ServiceKey=" + serviceKey + "&numOfRows=" + numOfRows +"&searchString=" + searchString+"&pageNo=" + pageNo );
 			
 			documentInfo.getDocumentElement().normalize();
 			System.out.println("root tag : " + documentInfo.getDocumentElement().getNodeName());
@@ -120,7 +120,7 @@ public class UserApiController {
 					if(trademark.getTitle() != null) {
 						String title = trademark.getTitle();
 						if(title.contains(",")) {
-							String str = title.replace(",", "_(콤마)");
+							String str = title.replace(",", "(_콤마)");
 							trademark.setTitle(str);
 						}
 					}

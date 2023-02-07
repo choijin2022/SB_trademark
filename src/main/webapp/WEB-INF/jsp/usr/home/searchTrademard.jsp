@@ -5,7 +5,6 @@
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-<!-- 		<form action="searchTrademard" method="POST" onsubmit="submitForm(this); return false;"> -->
 			<form>
 			<div class="table-box-type-1">
 				<table class="table table-zebra w-full">
@@ -78,7 +77,6 @@ function selectAllTrademark(selectAll)  {
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-<!-- 		<form action="../workSpace/storedTrademark" method="POST" onsubmit="submitForm(this); return false;"> -->
 			<table class="table table-zebra w-full">
 				<thead>
 					<tr>
@@ -172,51 +170,52 @@ function selectAllTrademark(selectAll)  {
 		$('form[name=do-stored-trademark-form]').submit();
 	})
 	
-// 	$.ajax({
-// 	  url  : "/usr/workSpace/storedTrademark",
-// 	  type : "POST",
-// 	  data : $("#checkedTd").serializeArray(),
-// 	  dataType: "json"
-// 	  success : function(){
-//     alert("성공?!");
-//   }
-	
-// });
-function pageUrl(pageNo){
-	let numOfRows = ${trademarks[0].numOfRows};
-	let searchString = ${trademarks[0].searchString};
+// function pageUrl(pageNo){
+
 	
 	
-	 $.ajax({
-         type: "post", 
-         contentType: "application/json; charset=utf-8",  
-         url: "/usr/home/searchTrademard" // 클라이언트가 요청을 보낼 서버의 URL 주소
-         data: numOfRows,
-     }) success : function(data){
-		 console.log(data)
-		 
-	 } 
-// 	 ,error:function(jqXHR, textStatus, errorThrown){
-//          alert("에러 발생~ \n" + textStatus + " : " + errorThrown);
-//          self.close();
-//      }
-	return false;
-}
+// 	return false;
+// }
+
+	function pageUrl(pageNo) {
+	 	let numOfRows = ${trademarks[0].numOfRows};
+	 	let searchString = "${trademarks[0].searchString}";
+		
+		
+		$('input[name=numOfRows]').val(numOfRows);
+		$('input[name=searchString]').val(searchString);
+		$('input[name=pageNo]').val(pageNo);
+		console.log(pageNo);
+// 		return false;
+		$('form[name=paging-form]').submit();
+		
+		
+	}
 
 </script>
 
+<form name="paging-form" action="searchTrademard" method="POST" >
+	<input type="hidden" name="numOfRows" value="">
+	<input type="hidden" name="searchString" value="">
+	<input type="hidden" name="pageNo" value="">
+</form>
+
 <section>
-<!-- 	<form > -->
 	<div class="page-menu mt-3 flex justify-center">
 			<div class="btn-group">
 				<c:set var="pageNo" value="${trademarks[0].pageNo}" />
 				<c:set var="pagesCount" value="${trademarks[0].pagesCount}" />
 				<c:set var="pageMenuLen" value="5" />
+				
 				<c:set var="startPage" value="${pageNo - pageMenuLen >= 1 ? pageNo - pageMenuLen : 1}" />
 				<c:set var="endPage" value="${pageNo + pageMenuLen <= pagesCount ? pageNo + pageMenuLen : pagesCount}" />
-				<c:set var="numOfRows" value="${numOfRows}" />
-<%-- 				<c:set var="searchString" value="${trademarks[0].searchString}" /> --%>
+<%-- 				<c:set var="ServiceKey" value="WTh4nA6jgRy5Jxmw4vhBoRbWDJFex7P%2BNr1NnXssp1P6N6NDjsY5hEZnOLCS4NEOpS8SSkrREQp%2FqX%2BsrB42DQ%3D%3D" /> --%>
+				<c:set var="numOfRows" value="${trademarks[0].numOfRows}" />
+				<c:set var="searchString" value="${trademarks[0].searchString}" />
+<%-- 				<c:set var="url" value="http://kipo-api.kipi.or.kr/openapi/service/trademarkInfoSearchService/getWordSearch" /> --%>
 				
+<%-- 				<c:set var="pageBaseUri" value="${url}?ServiceKey=${ServiceKey}&numOfRows=${numOfRows}&searchKeyword=${searchKeyword }" /> --%>
+<%-- 				<c:set var="pageBaseUri" value="${url}?ServiceKey=${ServiceKey}&searchString=${searchString}" /> --%>
 				<c:set var="pageBaseUri" value="&searchString=${searchString}" />
 			
 				<c:if test="${trademarks[0].totalCount != 0 }">
@@ -226,9 +225,9 @@ function pageUrl(pageNo){
 					</c:if>
 					<c:if test="${pageNo > 1 }">
 						<a class="btn btn-sm" onclick="pageUrl(1)">«</a>
-						<a class="btn btn-sm" onclick="pageUrl(${pageNo-1})">&lt;</a>
+						<a type="button" class="btn btn-sm" onclick="pageUrl(${pageNo-1})">&lt;</a>
+<%-- 						<a class="btn btn-sm" onclick="${pageBaseUri }&pageNo=${pageNo-1}">&lt;</a> --%>
 					</c:if>
-					
 					<c:forEach begin="${startPage }" end="${endPage }" var="i">
 						<a class="btn btn-sm ${pageNo == i ? 'btn-active' : ''}" onclick="pageUrl(${i })">${i }</a>
 					</c:forEach>
@@ -243,54 +242,7 @@ function pageUrl(pageNo){
 				</c:if>
 			</div>
 		</div>
-<!-- 	</form> -->
+	
 </section>
-
-
-<!-- 
-<section>
-	<form onsubmit="return submitForm(this)">
-	<div class="page-menu mt-3 flex justify-center">
-			<div class="btn-group">
-				<c:set var="pageNo" value="${trademarks[0].pageNo}" />
-				<c:set var="pagesCount" value="${trademarks[0].pagesCount}" />
-				<c:set var="pageMenuLen" value="5" />
-				<c:set var="startPage" value="${pageNo - pageMenuLen >= 1 ? pageNo - pageMenuLen : 1}" />
-				<c:set var="endPage" value="${pageNo + pageMenuLen <= pagesCount ? pageNo + pageMenuLen : pagesCount}" />
-<%-- 				<c:set var="ServiceKey" value="WTh4nA6jgRy5Jxmw4vhBoRbWDJFex7P%2BNr1NnXssp1P6N6NDjsY5hEZnOLCS4NEOpS8SSkrREQp%2FqX%2BsrB42DQ%3D%3D" /> --%>
-				<c:set var="numOfRows" value="${numOfRows}" />
-				<c:set var="searchString" value="${trademarks[0].searchString}" />
-<%-- 				<c:set var="url" value="http://kipo-api.kipi.or.kr/openapi/service/trademarkInfoSearchService/getWordSearch" /> --%>
-				
-<%-- 				<c:set var="pageBaseUri" value="${url}?ServiceKey=${ServiceKey}&numOfRows=${numOfRows}&searchKeyword=${searchKeyword }" /> --%>
-<%-- 				<c:set var="pageBaseUri" value="${url}?ServiceKey=${ServiceKey}&searchString=${searchString}" /> --%>
-				<c:set var="pageBaseUri" value="&searchString=${searchString}" />
-			
-				<c:if test="${trademarks[0].totalCount != 0 }">
-					<c:if test="${pageNo == 1 }">
-						<a class="btn btn-sm btn-disabled">«</a>
-						<a class="btn btn-sm btn-disabled">&lt;</a>
-					</c:if>
-					<c:if test="${pageNo > 1 }">
-						<a class="btn btn-sm" href="${pageBaseUri }&pageNo=1">«</a>
-						<a class="btn btn-sm" href="${pageBaseUri }&pageNo=${pageNo-1}">&lt;</a>
-					</c:if>
-					<c:forEach begin="${startPage }" end="${endPage }" var="i">
-						<a class="btn btn-sm ${pageNo == i ? 'btn-active' : ''}" href="${pageBaseUri }&pageNo=${i }">${i }</a>
-					</c:forEach>
-					<c:if test="${pageNo < pagesCount }">
-						<a class="btn btn-sm" href="${pageBaseUri }&pageNo=${pageNo + 1 }">&gt;</a>
-						<a class="btn btn-sm" href="${pageBaseUri }&pageNo=${pagesCount }">»</a>
-					</c:if>
-					<c:if test="${pageNo == pagesCount }">
-						<a class="btn btn-sm btn-disabled">&gt;</a>
-						<a class="btn btn-sm btn-disabled">»</a>
-					</c:if>
-				</c:if>
-			</div>
-		</div>
-	</form>
-</section>
- -->
 
 <%@ include file="../common/foot.jsp"%>

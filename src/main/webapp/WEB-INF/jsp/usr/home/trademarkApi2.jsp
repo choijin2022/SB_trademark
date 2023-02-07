@@ -129,9 +129,7 @@ const submitForm = function(form) {
 </section>
 
 <script>
-function storedTradeMark__submitForm(form){
-	console.log("???????");
-}
+
 
 
 </script>
